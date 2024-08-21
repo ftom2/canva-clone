@@ -2,6 +2,10 @@
 import { fabric } from "fabric";
 import { useEditor } from "../hooks/useEditor";
 import { useEffect, useRef } from "react";
+import Navbar from "./Navbar";
+import { Sidebar } from "./Sidebar";
+import Toolbar from "./Toolbar";
+import Footer from "./Footer";
 
 type Props = {};
 export default function Editor({}: Props) {
@@ -17,14 +21,30 @@ export default function Editor({}: Props) {
     });
 
     init({
-      initialCanvas: canvas,
-      initialContainer: containerRef.current,
+      canvas,
+      container: containerRef.current,
     });
+
+    return () => {
+      canvas.dispose();
+    };
   }, [init]);
   return (
     <div className="h-full flex flex-col">
-      <div ref={containerRef} className="h-full flex-1 bg-muted">
-        <canvas ref={canvasRef}></canvas>
+      <Navbar />
+      <div className="absolute h-[calc(100%-68px)] w-full top-[68px] flex">
+        <Sidebar activeTool="templates" onChangeActiveTool={() => {}} />
+
+        <main className="bg-muted flex-1 overflow-auto relative flex flex-col">
+          <Toolbar />
+          <div
+            ref={containerRef}
+            className="h-[calc(100%-124px)] flex-1 bg-red-200"
+          >
+            <canvas ref={canvasRef} />
+          </div>
+          <Footer />
+        </main>
       </div>
     </div>
   );

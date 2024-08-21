@@ -1,7 +1,16 @@
-import { useCallback } from "react";
+import { useCallback, useState } from "react";
 import { fabric } from "fabric";
+import { useAutoResize } from "./useAutoResize";
+import { IEditor } from "@/app/types";
 
 export const useEditor = () => {
+  const [canvas, setCanvas] = useState<fabric.Canvas | null>(null);
+  const [container, setContainer] = useState<HTMLDivElement | null>(null);
+  useAutoResize({
+    canvas,
+    container,
+  });
+
   fabric.Object.prototype.set({
     cornerColor: "#fff",
     cornerStyle: "circle",
@@ -12,43 +21,40 @@ export const useEditor = () => {
     cornerStrokeColor: "#3b82f6",
   });
 
-  const init = useCallback(
-    ({
-      initialCanvas,
-      initialContainer,
-    }: {
-      initialCanvas?: fabric.Canvas | null;
-      initialContainer?: HTMLDivElement | null;
-    }) => {
-      if (initialCanvas && initialContainer) {
-        const workspace = new fabric.Rect({
-          width: 900,
-          height: 1200,
-          fill: "white",
-          selectable: false,
-          hasControls: false,
-          shadow: new fabric.Shadow({
-            color: "rgba(0,0,0,0.8)",
-            blur: 5,
-          }),
-        });
-        const test = new fabric.Rect({
-          width: 100,
-          height: 100,
-          fill: "black",
-        });
+  const init = useCallback(({ canvas, container }: IEditor) => {
+    if (canvas && container) {
+      const workspace = new fabric.Rect({
+        //85% of the container width
+        width: container.offsetWidth * 0.9,
+        height: container.offsetHeight * 0.9,
+        fill: "white",
+        name: "clip",
+        selectable: false,
+        hasControls: false,
+        shadow: new fabric.Shadow({
+          color: "rgba(0,0,0,0.8)",
+          blur: 5,
+        }),
+      });
 
-        initialCanvas.setWidth(initialContainer.offsetWidth);
-        initialCanvas.setHeight(initialContainer.offsetHeight);
+      canvas.setWidth(container.offsetWidth);
+      canvas.setHeight(container.offsetHeight);
 
-        initialCanvas.add(workspace).centerObject(workspace);
-        initialCanvas.add(test).centerObject(test);
-        // this will clip the canvas to the workspace, so every object outside the workspace will be clipped
-        initialCanvas.clipPath = workspace;
-      }
-    },
-    []
-  );
+      canvas.add(workspace).centerObject(workspace);
+      canvas.clipPath = workspace;
+
+      setCanvas(canvas);
+      setContainer(container);
+
+      const test = new fabric.Rect({
+        width: 100,
+        height: 100,
+        fill: "black",
+      });
+      canvas.add(test).centerObject(test);
+      // this will clip the canvas to the workspace, so every object outside the workspace will be clipped
+    }
+  }, []);
   return {
     init,
   };
