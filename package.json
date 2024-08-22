@@ -27,6 +27,7 @@
     "tailwindcss-animate": "^1.0.7"
   },
   "devDependencies": {
+    "@types/material-colors": "^1.2.3",
     "@types/fabric": "5.3.0",
     "@types/node": "^20",
     "@types/react": "^18",

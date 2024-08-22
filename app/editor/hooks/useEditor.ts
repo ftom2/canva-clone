@@ -1,7 +1,7 @@
 import { useCallback, useState } from "react";
 import { fabric } from "fabric";
 import { useAutoResize } from "./useAutoResize";
-import { IEditor } from "@/app/types";
+import { ICanvas } from "../types";
 
 export const useEditor = () => {
   const [canvas, setCanvas] = useState<fabric.Canvas | null>(null);
@@ -21,7 +21,7 @@ export const useEditor = () => {
     cornerStrokeColor: "#3b82f6",
   });
 
-  const init = useCallback(({ canvas, container }: IEditor) => {
+  const init = useCallback(({ canvas, container }: ICanvas) => {
     if (canvas && container) {
       const workspace = new fabric.Rect({
         //85% of the container width
