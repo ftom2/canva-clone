@@ -25,8 +25,8 @@ export const useEditor = () => {
     if (canvas && container) {
       const workspace = new fabric.Rect({
         //85% of the container width
-        width: container.offsetWidth * 0.9,
-        height: container.offsetHeight * 0.9,
+        width: 900,
+        height: 1200,
         fill: "white",
         name: "clip",
         selectable: false,

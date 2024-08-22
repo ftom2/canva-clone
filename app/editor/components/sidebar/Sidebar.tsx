@@ -1,8 +1,8 @@
 "use client";
 
 import { SidebarItem } from "./SidebarItem";
-import { MenuProps } from "../types";
-import { sidebarItems } from "../constants";
+import { MenuProps } from "../../types";
+import { sidebarItems } from "../../constants";
 
 export const Sidebar = ({ activeTool, onChangeActiveTool }: MenuProps) => {
   return (

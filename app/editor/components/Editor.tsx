@@ -3,10 +3,11 @@ import { fabric } from "fabric";
 import { useEditor } from "../hooks/useEditor";
 import { useCallback, useEffect, useRef, useState } from "react";
 import Navbar from "./navbar/Navbar";
-import { Sidebar } from "./Sidebar";
+import { Sidebar } from "./sidebar/Sidebar";
 import Toolbar from "./Toolbar";
 import Footer from "./Footer";
 import { ActiveTool } from "../types";
+import { ShapeSidebar } from "./sidebar/ShapeSidebar";
 
 type Props = {};
 export default function Editor({}: Props) {
@@ -56,12 +57,16 @@ export default function Editor({}: Props) {
           activeTool={activeTool}
           onChangeActiveTool={onChangeActiveTool}
         />
+        <ShapeSidebar
+          activeTool={activeTool}
+          onChangeActiveTool={onChangeActiveTool}
+        />
 
         <main className="bg-muted flex-1 overflow-auto relative flex flex-col">
           <Toolbar />
           <div
             ref={containerRef}
-            className="h-[calc(100%-124px)] flex-1 bg-red-200"
+            className="h-[calc(100%-124px)] flex-1 bg-gray-100"
           >
             <canvas ref={canvasRef} />
           </div>
