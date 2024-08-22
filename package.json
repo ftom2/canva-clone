@@ -17,6 +17,7 @@
     "clsx": "^2.1.1",
     "fabric": "^5.3.0-browser",
     "jsdom": "^24.1.1",
+    "lodash.debounce": "^4.0.8",
     "lucide-react": "^0.428.0",
     "material-colors": "^1.2.6",
     "next": "14.2.5",
@@ -27,8 +28,9 @@
     "tailwindcss-animate": "^1.0.7"
   },
   "devDependencies": {
+    "@types/lodash.debounce": "^4.0.9",
+    "@types/fabric": "^5.3.0",
     "@types/material-colors": "^1.2.3",
-    "@types/fabric": "5.3.0",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",

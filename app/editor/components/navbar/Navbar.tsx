@@ -6,7 +6,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import Logo from "./Logo";
+import Logo from "../Logo";
 import { Button } from "@/components/ui/button";
 import {
   ChevronDown,
@@ -20,10 +20,12 @@ import { Separator } from "@/components/ui/separator";
 import NavbarActionItem from "./NavbarActionItem";
 import { BsCloudCheck } from "react-icons/bs";
 import Dropdown from "@/components/Dropdown";
-import { exportMenuItems } from "../constants";
+import { exportMenuItems } from "../../constants";
+import NavbarDropdownItem from "./NavbarDropdownItem";
+import { MenuProps } from "../../types";
+import { cn } from "@/lib/utils";
 
-type Props = {};
-export default function Navbar({}: Props) {
+export default function Navbar({ activeTool, onChangeActiveTool }: MenuProps) {
   return (
     <div className="w-full flex items-center p-4 h-[68px] gap-x-8 border-b lg:pl-8">
       <Logo />
@@ -36,19 +38,17 @@ export default function Navbar({}: Props) {
             </Button>
           }
         >
-          <DropdownMenuItem className="flex items-center gap-2">
-            <CiFileOn className="size-8" />
-            <div>
-              <p>Open</p>
-              <p className="text-xs text-muted-foreground">Open a JSON file</p>
-            </div>
-          </DropdownMenuItem>
+          <NavbarDropdownItem
+            item={{ label: "Open", description: "Open a JSON file" }}
+          />
         </Dropdown>
 
         <Separator orientation="vertical" className="mx-2" />
         <NavbarActionItem
           label="Select"
           icon={<MousePointerClick size={16} />}
+          onClick={() => onChangeActiveTool("select")}
+          className={cn(activeTool === "select" && "bg-gray-100")}
         />
         <NavbarActionItem label="Undo" icon={<Undo2 size={16} />} />
         <NavbarActionItem label="Redo" icon={<Redo2 size={16} />} />
@@ -68,18 +68,7 @@ export default function Navbar({}: Props) {
             }
           >
             {exportMenuItems.map((item) => (
-              <DropdownMenuItem
-                key={item.label}
-                className="flex items-center gap-2"
-              >
-                <CiFileOn className="size-8" />
-                <div>
-                  <p>{item.label}</p>
-                  <p className="text-xs text-muted-foreground">
-                    {item.description}
-                  </p>
-                </div>
-              </DropdownMenuItem>
+              <NavbarDropdownItem key={item.label} item={item} />
             ))}
           </Dropdown>
           {/* TODO: Add user button */}

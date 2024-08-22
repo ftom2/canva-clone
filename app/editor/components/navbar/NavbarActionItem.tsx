@@ -5,11 +5,22 @@ type Props = {
   label: string;
   icon: React.ReactNode;
   onClick?: () => void;
+  className?: string;
 };
-export default function NavbarActionItem({ label, icon, onClick }: Props) {
+export default function NavbarActionItem({
+  label,
+  icon,
+  className,
+  onClick,
+}: Props) {
   return (
     <Hint label={label} side="bottom" sideOffset={10}>
-      <Button variant="ghost" size="icon" onClick={onClick}>
+      <Button
+        variant="ghost"
+        size="icon"
+        onClick={onClick}
+        className={className}
+      >
         {icon}
       </Button>
     </Hint>

@@ -267,3 +267,8 @@ export interface ICanvas {
   canvas?: fabric.Canvas | null;
   container?: HTMLDivElement | null;
 }
+
+export interface MenuProps {
+  activeTool: ActiveTool;
+  onChangeActiveTool: (tool: ActiveTool) => void;
+}

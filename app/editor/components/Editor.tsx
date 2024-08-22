@@ -2,7 +2,7 @@
 import { fabric } from "fabric";
 import { useEditor } from "../hooks/useEditor";
 import { useCallback, useEffect, useRef, useState } from "react";
-import Navbar from "./Navbar";
+import Navbar from "./navbar/Navbar";
 import { Sidebar } from "./Sidebar";
 import Toolbar from "./Toolbar";
 import Footer from "./Footer";
@@ -50,7 +50,7 @@ export default function Editor({}: Props) {
   }, [init]);
   return (
     <div className="h-full flex flex-col">
-      <Navbar />
+      <Navbar activeTool={activeTool} onChangeActiveTool={onChangeActiveTool} />
       <div className="absolute h-[calc(100%-68px)] w-full top-[68px] flex">
         <Sidebar
           activeTool={activeTool}
