@@ -1,14 +1,70 @@
 import { useCallback, useMemo, useState } from "react";
 import { fabric } from "fabric";
 import { useAutoResize } from "./useAutoResize";
-import { BuildEditorProps, IEditor, ICanvas, CIRCLE_OPTIONS } from "../types";
+import {
+  BuildEditorProps,
+  IEditor,
+  ICanvas,
+  CIRCLE_OPTIONS,
+  RECTANGLE_OPTIONS,
+  TRIANGLE_OPTIONS,
+  DIAMOND_OPTIONS,
+} from "../types";
 
 function buildEditor({ canvas }: BuildEditorProps): IEditor {
+  function getWorkspace() {
+    return canvas.getObjects().find((obj) => obj.name === "clip");
+  }
+
+  function center(obj: fabric.Object) {
+    const workspace = getWorkspace();
+    const center = workspace?.getCenterPoint();
+    if (!center) return;
+    // @ts-ignore
+    canvas?._centerObject(obj, center);
+  }
+
+  function addToCanvas(obj: fabric.Object) {
+    center(obj);
+    canvas?.add(obj);
+    canvas?.setActiveObject(obj);
+  }
+
   return {
     addCircle() {
-      const circle = new fabric.Circle(CIRCLE_OPTIONS);
-      canvas?.add(circle).centerObject(circle);
-      canvas.setActiveObject(circle);
+      const object = new fabric.Circle(CIRCLE_OPTIONS);
+      addToCanvas(object);
+    },
+    addSoftRectangle() {
+      const object = new fabric.Rect({ ...RECTANGLE_OPTIONS, rx: 10, ry: 10 });
+      addToCanvas(object);
+    },
+    addRectangle() {
+      const object = new fabric.Rect(RECTANGLE_OPTIONS);
+      addToCanvas(object);
+    },
+    addTriangle() {
+      const object = new fabric.Triangle(TRIANGLE_OPTIONS);
+      addToCanvas(object);
+    },
+    addInverseTriangle() {
+      const object = new fabric.Triangle({ ...TRIANGLE_OPTIONS, angle: 180 });
+      addToCanvas(object);
+    },
+    addDiamond() {
+      const SIZE = DIAMOND_OPTIONS.width;
+
+      const object = new fabric.Polygon(
+        [
+          { x: SIZE / 2, y: 0 },
+          { x: SIZE, y: SIZE / 2 },
+          { x: SIZE / 2, y: SIZE },
+          { x: 0, y: SIZE / 2 },
+        ],
+        DIAMOND_OPTIONS
+      );
+
+      addToCanvas(object);
     },
   };
 }
