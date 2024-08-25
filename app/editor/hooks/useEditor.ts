@@ -1,7 +1,17 @@
-import { useCallback, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { fabric } from "fabric";
 import { useAutoResize } from "./useAutoResize";
-import { ICanvas } from "../types";
+import { BuildEditorProps, IEditor, ICanvas, CIRCLE_OPTIONS } from "../types";
+
+function buildEditor({ canvas }: BuildEditorProps): IEditor {
+  return {
+    addCircle() {
+      const circle = new fabric.Circle(CIRCLE_OPTIONS);
+      canvas?.add(circle).centerObject(circle);
+      canvas.setActiveObject(circle);
+    },
+  };
+}
 
 export const useEditor = () => {
   const [canvas, setCanvas] = useState<fabric.Canvas | null>(null);
@@ -10,6 +20,13 @@ export const useEditor = () => {
     canvas,
     container,
   });
+
+  const editor = useMemo(() => {
+    if (canvas) {
+      return buildEditor({ canvas });
+    }
+    return undefined;
+  }, [canvas]);
 
   fabric.Object.prototype.set({
     cornerColor: "#fff",
@@ -57,5 +74,6 @@ export const useEditor = () => {
   }, []);
   return {
     init,
+    editor,
   };
 };

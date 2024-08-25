@@ -11,7 +11,7 @@ import { ShapeSidebar } from "./sidebar/ShapeSidebar";
 
 type Props = {};
 export default function Editor({}: Props) {
-  const { init } = useEditor();
+  const { init, editor } = useEditor();
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -60,6 +60,7 @@ export default function Editor({}: Props) {
         <ShapeSidebar
           activeTool={activeTool}
           onChangeActiveTool={onChangeActiveTool}
+          editor={editor}
         />
 
         <main className="bg-muted flex-1 overflow-auto relative flex flex-col">
