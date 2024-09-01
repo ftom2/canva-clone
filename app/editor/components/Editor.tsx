@@ -8,6 +8,7 @@ import Toolbar from "./Toolbar";
 import Footer from "./Footer";
 import { ActiveTool } from "../types";
 import { ShapeSidebar } from "./sidebar/ShapeSidebar";
+import { FillSidebar } from "./sidebar/FillSidebar";
 
 type Props = {};
 export default function Editor({}: Props) {
@@ -28,6 +29,7 @@ export default function Editor({}: Props) {
       if (activeTool === "draw") {
         // TODO: disable draw tool
       }
+
       setActiveTool(tool);
     },
     [activeTool]
@@ -62,9 +64,18 @@ export default function Editor({}: Props) {
           onChangeActiveTool={onChangeActiveTool}
           editor={editor}
         />
-
+        <FillSidebar
+          activeTool={activeTool}
+          onChangeActiveTool={onChangeActiveTool}
+          editor={editor}
+        />
         <main className="bg-muted flex-1 overflow-auto relative flex flex-col">
-          <Toolbar />
+          <Toolbar
+            editor={editor}
+            activeTool={activeTool}
+            onChangeActiveTool={onChangeActiveTool}
+            key={JSON.stringify(editor?.canvas.getActiveObject())}
+          />
           <div
             ref={containerRef}
             className="h-[calc(100%-124px)] flex-1 bg-gray-100"

@@ -3,23 +3,17 @@ import { FaDiamond } from "react-icons/fa6";
 import { FaCircle, FaSquare, FaSquareFull } from "react-icons/fa";
 
 import { cn } from "@/lib/utils";
-import { ActiveTool, IEditor } from "@/app/editor/types";
+import { ActiveTool, IEditor, SidebarProps } from "@/app/editor/types";
 import { ToolSidebarHeader } from "./ToolSidebarHeader";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { ShapeTool } from "./ShapeTool";
 import { ToolSidebarClose } from "./ToolSidebarClose";
 
-interface ShapeSidebarProps {
-  editor?: IEditor;
-  activeTool: ActiveTool;
-  onChangeActiveTool: (tool: ActiveTool) => void;
-}
-
 export const ShapeSidebar = ({
   editor,
   activeTool,
   onChangeActiveTool,
-}: ShapeSidebarProps) => {
+}: SidebarProps) => {
   const onClose = () => {
     onChangeActiveTool("select");
   };
