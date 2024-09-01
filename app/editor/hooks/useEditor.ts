@@ -137,7 +137,10 @@ function buildEditor({
       addToCanvas(object);
     },
     getActiveFillColor() {
-      return fillColor;
+      const selectedObject = selectedObjects[0];
+      const value = selectedObject?.get("fill") ?? fillColor;
+      // Gradients and patterns are not supported, so we know that value will be a string
+      return value as string;
     },
     getActiveStrokeColor() {
       return strokeColor;

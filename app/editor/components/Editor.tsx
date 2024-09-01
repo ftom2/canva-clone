@@ -9,6 +9,7 @@ import Footer from "./Footer";
 import { ActiveTool } from "../types";
 import { ShapeSidebar } from "./sidebar/ShapeSidebar";
 import { FillSidebar } from "./sidebar/FillSidebar";
+import { selectionDependentTools } from "../constants";
 
 type Props = {};
 export default function Editor({}: Props) {
@@ -51,6 +52,22 @@ export default function Editor({}: Props) {
       canvas.dispose();
     };
   }, [init]);
+
+  /**
+   * When we click outside, and there are no selected objects
+   * we should switch back to the select tool if the current tool is selection dependent
+   * for example: fill, stroke, etc. are dependent on selection so when no object is selected
+   * we should switch back to the select tool
+   */
+  useEffect(() => {
+    if (
+      !editor?.selectedObjects.length &&
+      selectionDependentTools.includes(activeTool)
+    ) {
+      setActiveTool("select");
+    }
+  }, [activeTool, editor?.selectedObjects.length]);
+
   return (
     <div className="h-full flex flex-col">
       <Navbar activeTool={activeTool} onChangeActiveTool={onChangeActiveTool} />

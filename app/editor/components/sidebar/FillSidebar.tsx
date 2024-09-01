@@ -6,6 +6,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { ToolSidebarClose } from "./ToolSidebarClose";
 import { ColorPicker } from "../ColorPicker";
 import { FILL_COLOR } from "../../constants";
+import { useCallback, useEffect } from "react";
 
 export const FillSidebar = ({
   editor,
@@ -13,9 +14,9 @@ export const FillSidebar = ({
   onChangeActiveTool,
 }: SidebarProps) => {
   const fillColor = editor?.getActiveFillColor() || FILL_COLOR;
-  const onClose = () => {
+  const onClose = useCallback(() => {
     onChangeActiveTool("select");
-  };
+  }, [onChangeActiveTool]);
 
   const onChange = (value: string) => {
     editor?.changeFillColor(value);
