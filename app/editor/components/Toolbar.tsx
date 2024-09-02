@@ -3,6 +3,7 @@ import { ActiveTool, IEditor } from "../types";
 import { Hint } from "@/components/Hint";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { BsBorderWidth } from "react-icons/bs";
 
 interface ToolbarProps {
   editor?: IEditor;
@@ -54,6 +55,16 @@ export default function Toolbar({
                 borderColor: strokeColor,
               }}
             />
+          </Button>
+        </Hint>
+        <Hint label="stroke width" side="bottom" sideOffset={5}>
+          <Button
+            onClick={() => onChangeActiveTool("stroke-width")}
+            size="icon"
+            variant="ghost"
+            className={cn(activeTool === "stroke-width" && "bg-gray-100")}
+          >
+            <BsBorderWidth className="size-4" />
           </Button>
         </Hint>
       </div>

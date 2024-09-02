@@ -10,7 +10,6 @@ export const useAutoResize = ({ canvas, container }: UseAutoResizeProps) => {
   const resizeObserverRef = useRef<ResizeObserver | null>(null);
 
   const autoZoom = useCallback(() => {
-    console.log("autoZoom", { canvas, container });
     if (!canvas || !container) return;
 
     const width = container.offsetWidth;
