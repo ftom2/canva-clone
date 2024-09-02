@@ -11,7 +11,7 @@ import { ShapeSidebar } from "./sidebar/ShapeSidebar";
 import { FillSidebar } from "./sidebar/FillSidebar";
 import { selectionDependentTools } from "../constants";
 import { StrokeColorSidebar } from "./sidebar/StrokeColorSidebar";
-import { StrokeWidthSidebar } from "./sidebar/StrokeWidthSidebar";
+import { StrokeSidebar } from "./sidebar/StrokeSidebar";
 
 type Props = {};
 export default function Editor({}: Props) {
@@ -93,7 +93,7 @@ export default function Editor({}: Props) {
           onChangeActiveTool={onChangeActiveTool}
           editor={editor}
         />
-        <StrokeWidthSidebar
+        <StrokeSidebar
           activeTool={activeTool}
           onChangeActiveTool={onChangeActiveTool}
           editor={editor}

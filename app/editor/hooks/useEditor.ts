@@ -10,6 +10,7 @@ import {
   FILL_COLOR,
   STROKE_COLOR,
   STROKE_WIDTH,
+  STROKE_DASH_ARRAY,
 } from "../constants";
 import useCanvasEvents from "./useCanvasEvents";
 import { isTextType } from "../utils";
@@ -19,6 +20,8 @@ function buildEditor({
   fillColor,
   setFillColor,
   strokeColor,
+  strokeDashArray,
+  setStrokeDashArray,
   setStrokeColor,
   strokeWidth,
   setStrokeWidth,
@@ -41,6 +44,13 @@ function buildEditor({
     canvas?.add(obj);
     canvas?.setActiveObject(obj);
   }
+
+  const SHARED_SVG_PROPS = {
+    fill: fillColor,
+    stroke: strokeColor,
+    strokeWidth: strokeWidth,
+    strokeDasharray: strokeDashArray,
+  };
 
   return {
     changeFillColor(value: string) {
@@ -68,12 +78,18 @@ function buildEditor({
       });
       canvas.requestRenderAll();
     },
+    changeStrokeDashArray(value: number[]) {
+      setStrokeDashArray(value);
+      canvas.getActiveObjects().forEach((obj) => {
+        obj.set({ strokeDashArray: value });
+      });
+
+      canvas.requestRenderAll();
+    },
     addCircle() {
       const object = new fabric.Circle({
         ...CIRCLE_OPTIONS,
-        fill: fillColor,
-        stroke: strokeColor,
-        strokeWidth: strokeWidth,
+        ...SHARED_SVG_PROPS,
       });
       addToCanvas(object);
     },
@@ -82,27 +98,21 @@ function buildEditor({
         ...RECTANGLE_OPTIONS,
         rx: 10,
         ry: 10,
-        stroke: strokeColor,
-        strokeWidth: strokeWidth,
-        fill: fillColor,
+        ...SHARED_SVG_PROPS,
       });
       addToCanvas(object);
     },
     addRectangle() {
       const object = new fabric.Rect({
         ...RECTANGLE_OPTIONS,
-        stroke: strokeColor,
-        strokeWidth: strokeWidth,
-        fill: fillColor,
+        ...SHARED_SVG_PROPS,
       });
       addToCanvas(object);
     },
     addTriangle() {
       const object = new fabric.Triangle({
         ...TRIANGLE_OPTIONS,
-        stroke: strokeColor,
-        strokeWidth: strokeWidth,
-        fill: fillColor,
+        ...SHARED_SVG_PROPS,
       });
       addToCanvas(object);
     },
@@ -110,9 +120,7 @@ function buildEditor({
       const object = new fabric.Triangle({
         ...TRIANGLE_OPTIONS,
         angle: 180,
-        stroke: strokeColor,
-        strokeWidth: strokeWidth,
-        fill: fillColor,
+        ...SHARED_SVG_PROPS,
       });
       addToCanvas(object);
     },
@@ -128,9 +136,7 @@ function buildEditor({
         ],
         {
           ...DIAMOND_OPTIONS,
-          stroke: strokeColor,
-          strokeWidth: strokeWidth,
-          fill: fillColor,
+          ...SHARED_SVG_PROPS,
         }
       );
 
@@ -143,10 +149,22 @@ function buildEditor({
       return value as string;
     },
     getActiveStrokeColor() {
-      return strokeColor;
+      const selectedObject = selectedObjects[0];
+      const value = selectedObject?.stroke ?? strokeColor;
+
+      return value as string;
     },
     getActiveStrokeWidth() {
-      return strokeWidth;
+      const selectedObject = selectedObjects[0];
+      const value = selectedObject?.strokeWidth ?? strokeWidth;
+
+      return value;
+    },
+    getActiveStrokeDashArray() {
+      const selectedObject = selectedObjects[0];
+      const value = selectedObject?.strokeDashArray ?? strokeDashArray;
+
+      return value;
     },
     canvas,
     selectedObjects,
@@ -161,6 +179,8 @@ export const useEditor = () => {
   const [fillColor, setFillColor] = useState<string>(FILL_COLOR);
   const [strokeColor, setStrokeColor] = useState<string>(STROKE_COLOR);
   const [strokeWidth, setStrokeWidth] = useState<number>(STROKE_WIDTH);
+  const [strokeDashArray, setStrokeDashArray] =
+    useState<number[]>(STROKE_DASH_ARRAY);
 
   useAutoResize({
     canvas,
@@ -184,10 +204,19 @@ export const useEditor = () => {
         strokeWidth,
         setStrokeWidth,
         selectedObjects,
+        strokeDashArray,
+        setStrokeDashArray,
       });
     }
     return undefined;
-  }, [canvas, fillColor, selectedObjects, strokeColor, strokeWidth]);
+  }, [
+    canvas,
+    fillColor,
+    selectedObjects,
+    strokeColor,
+    strokeDashArray,
+    strokeWidth,
+  ]);
 
   fabric.Object.prototype.set({
     cornerColor: "#fff",
