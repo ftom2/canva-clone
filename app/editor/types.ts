@@ -92,8 +92,8 @@ export interface IEditor {
   // addText: (value: string, options?: ITextboxOptions) => void;
   // getActiveOpacity: () => number;
   // changeOpacity: (value: number) => void;
-  // bringForward: () => void;
-  // sendBackwards: () => void;
+  bringForward: () => void;
+  sendBackwards: () => void;
   changeStrokeWidth: (value: number) => void;
   changeFillColor: (value: string) => void;
   changeStrokeColor: (value: string) => void;

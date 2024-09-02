@@ -4,6 +4,8 @@ import { Hint } from "@/components/Hint";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { BsBorderWidth } from "react-icons/bs";
+import { ToolbarItem } from "./sidebar/ToolbarItem";
+import { ArrowDown, ArrowUp } from "lucide-react";
 
 interface ToolbarProps {
   editor?: IEditor;
@@ -27,46 +29,38 @@ export default function Toolbar({
   return (
     <div className="shrink-0 h-[56px] border-b bg-white w-full flex items-center overflow-x-auto z-40 p-2 gap-x-2">
       <div className="flex items-center justify-center h-full">
-        <Hint label="color" side="bottom" sideOffset={5}>
-          <Button
-            onClick={() => onChangeActiveTool("fill")}
-            size="icon"
-            variant="ghost"
-            className={cn(activeTool === "fill" && "bg-gray-100")}
-          >
-            <div
-              className="rounded-sm size-4 border"
-              style={{
-                backgroundColor: fillColor,
-              }}
-            />
-          </Button>
-        </Hint>
-        <Hint label="stroke color" side="bottom" sideOffset={5}>
-          <Button
-            onClick={() => onChangeActiveTool("stroke-color")}
-            size="icon"
-            variant="ghost"
-            className={cn(activeTool === "stroke-color" && "bg-gray-100")}
-          >
-            <div
-              className="rounded-sm size-4 border-2 bg-white"
-              style={{
-                borderColor: strokeColor,
-              }}
-            />
-          </Button>
-        </Hint>
-        <Hint label="stroke width" side="bottom" sideOffset={5}>
-          <Button
-            onClick={() => onChangeActiveTool("stroke-width")}
-            size="icon"
-            variant="ghost"
-            className={cn(activeTool === "stroke-width" && "bg-gray-100")}
-          >
-            <BsBorderWidth className="size-4" />
-          </Button>
-        </Hint>
+        <ToolbarItem
+          activeTool={activeTool}
+          onClick={onChangeActiveTool}
+          style={{ backgroundColor: fillColor }}
+          type="fill"
+          label="color"
+        />
+        <ToolbarItem
+          activeTool={activeTool}
+          onClick={onChangeActiveTool}
+          style={{ borderColor: strokeColor }}
+          type="stroke-color"
+          label="stroke color"
+        />
+
+        <ToolbarItem
+          activeTool={activeTool}
+          onClick={onChangeActiveTool}
+          type="stroke-width"
+          label="stroke width"
+        >
+          <BsBorderWidth className="size-4" />
+        </ToolbarItem>
+        <ToolbarItem
+          onClick={() => editor?.bringForward()}
+          label="bring forward"
+        >
+          <ArrowUp className="size-4" />
+        </ToolbarItem>
+        <ToolbarItem onClick={() => editor?.sendBackwards()} label="send back">
+          <ArrowDown className="size-4" />
+        </ToolbarItem>
       </div>
     </div>
   );

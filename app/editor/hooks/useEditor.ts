@@ -49,10 +49,24 @@ function buildEditor({
     fill: fillColor,
     stroke: strokeColor,
     strokeWidth: strokeWidth,
-    strokeDasharray: strokeDashArray,
+    strokeDashArray: strokeDashArray,
   };
 
   return {
+    bringForward() {
+      canvas.getActiveObjects().forEach((obj) => {
+        canvas.bringForward(obj);
+      });
+      canvas.requestRenderAll();
+    },
+    sendBackwards() {
+      canvas.getActiveObjects().forEach((obj) => {
+        canvas.sendBackwards(obj);
+      });
+      canvas.requestRenderAll();
+      // prevent the object being placed behind the workspace
+      getWorkspace()?.sendToBack();
+    },
     changeFillColor(value: string) {
       setFillColor(value);
       canvas.getActiveObjects().forEach((obj) => {
