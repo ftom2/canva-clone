@@ -1,4 +1,5 @@
 import { fabric } from "fabric";
+import { ITextboxOptions } from "fabric/fabric-impl";
 
 export type ActiveTool =
   | "select"
@@ -91,7 +92,7 @@ export interface IEditor {
   // getActiveFontWeight: () => number;
   // getActiveFontFamily: () => string;
   // changeFontFamily: (value: string) => void;
-  // addText: (value: string, options?: ITextboxOptions) => void;
+  addText: (value: string, options?: ITextboxOptions) => void;
   getActiveOpacity: () => number;
   changeOpacity: (value: number) => void;
   bringForward: () => void;

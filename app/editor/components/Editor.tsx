@@ -13,6 +13,7 @@ import { selectionDependentTools } from "../constants";
 import { StrokeColorSidebar } from "./sidebar/StrokeColorSidebar";
 import { StrokeSidebar } from "./sidebar/StrokeSidebar";
 import { OpacitySidebar } from "./sidebar/OpacitySidebar";
+import { TextSidebar } from "./sidebar/TextSidebar";
 
 type Props = {};
 export default function Editor({}: Props) {
@@ -106,7 +107,11 @@ export default function Editor({}: Props) {
           onChangeActiveTool={onChangeActiveTool}
           editor={editor}
         />
-
+        <TextSidebar
+          activeTool={activeTool}
+          onChangeActiveTool={onChangeActiveTool}
+          editor={editor}
+        />
         <main className="bg-muted flex-1 overflow-auto relative flex flex-col">
           <Toolbar
             editor={editor}

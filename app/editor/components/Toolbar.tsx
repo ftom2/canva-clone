@@ -4,6 +4,7 @@ import { BsBorderWidth } from "react-icons/bs";
 import { ToolbarItem } from "./sidebar/ToolbarItem";
 import { ArrowDown, ArrowUp } from "lucide-react";
 import { RxTransparencyGrid } from "react-icons/rx";
+import { isTextType } from "../utils";
 
 interface ToolbarProps {
   editor?: IEditor;
@@ -17,6 +18,10 @@ export default function Toolbar({
 }: ToolbarProps) {
   const fillColor = editor?.getActiveFillColor();
   const strokeColor = editor?.getActiveStrokeColor();
+
+  const selectedObjectType = editor?.selectedObjects[0]?.type;
+
+  const isText = isTextType(selectedObjectType);
 
   if (!editor?.selectedObjects.length) {
     return (
@@ -34,22 +39,26 @@ export default function Toolbar({
           type="fill"
           label="color"
         />
-        <ToolbarItem
-          activeTool={activeTool}
-          onClick={onChangeActiveTool}
-          style={{ borderColor: strokeColor }}
-          type="stroke-color"
-          label="stroke color"
-        />
+        {!isText && (
+          <>
+            <ToolbarItem
+              activeTool={activeTool}
+              onClick={onChangeActiveTool}
+              style={{ borderColor: strokeColor }}
+              type="stroke-color"
+              label="stroke color"
+            />
 
-        <ToolbarItem
-          activeTool={activeTool}
-          onClick={onChangeActiveTool}
-          type="stroke-width"
-          label="stroke width"
-        >
-          <BsBorderWidth className="size-4" />
-        </ToolbarItem>
+            <ToolbarItem
+              activeTool={activeTool}
+              onClick={onChangeActiveTool}
+              type="stroke-width"
+              label="stroke width"
+            >
+              <BsBorderWidth className="size-4" />
+            </ToolbarItem>
+          </>
+        )}
         <ToolbarItem
           onClick={() => editor?.bringForward()}
           label="bring forward"

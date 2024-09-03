@@ -11,6 +11,7 @@ import {
   STROKE_COLOR,
   STROKE_WIDTH,
   STROKE_DASH_ARRAY,
+  TEXT_OPTIONS,
 } from "../constants";
 import useCanvasEvents from "./useCanvasEvents";
 import { isTextType } from "../utils";
@@ -55,6 +56,14 @@ function buildEditor({
   };
 
   return {
+    addText(text: string, options?: fabric.ITextOptions) {
+      const object = new fabric.Textbox(text, {
+        ...TEXT_OPTIONS,
+        fill: fillColor,
+        ...options,
+      });
+      addToCanvas(object);
+    },
     changeOpacity(value: number) {
       setOpacity(value);
       canvas.getActiveObjects().forEach((obj) => {
