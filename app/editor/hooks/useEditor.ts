@@ -12,6 +12,7 @@ import {
   STROKE_WIDTH,
   STROKE_DASH_ARRAY,
   TEXT_OPTIONS,
+  FONT_FAMILY,
 } from "../constants";
 import useCanvasEvents from "./useCanvasEvents";
 import { isTextType } from "../utils";
@@ -27,8 +28,9 @@ function buildEditor({
   strokeWidth,
   setStrokeWidth,
   selectedObjects,
-  opacity,
   setOpacity,
+  fontFamily,
+  setFontFamily,
 }: BuildEditorProps): IEditor {
   function getWorkspace() {
     return canvas.getObjects().find((obj) => obj.name === "clip");
@@ -56,6 +58,19 @@ function buildEditor({
   };
 
   return {
+    changeFontFamily(value: string) {
+      setFontFamily(value);
+      canvas.getActiveObjects().forEach((obj) => {
+        if (isTextType(obj.type)) {
+          (obj as fabric.Textbox).set({ fontFamily: value });
+        }
+      });
+      canvas.requestRenderAll();
+    },
+    getActiveFontFamily() {
+      const selectedObject = selectedObjects[0];
+      return (selectedObject as fabric.Textbox)?.fontFamily ?? fontFamily;
+    },
     addText(text: string, options?: fabric.ITextOptions) {
       const object = new fabric.Textbox(text, {
         ...TEXT_OPTIONS,
@@ -218,6 +233,7 @@ export const useEditor = () => {
   const [opacity, setOpacity] = useState<number>(1);
   const [strokeDashArray, setStrokeDashArray] =
     useState<number[]>(STROKE_DASH_ARRAY);
+  const [fontFamily, setFontFamily] = useState<string>(FONT_FAMILY);
 
   useAutoResize({
     canvas,
@@ -243,8 +259,9 @@ export const useEditor = () => {
         selectedObjects,
         strokeDashArray,
         setStrokeDashArray,
-        opacity,
         setOpacity,
+        fontFamily,
+        setFontFamily,
       });
     }
     return undefined;
@@ -255,7 +272,7 @@ export const useEditor = () => {
     strokeColor,
     strokeDashArray,
     strokeWidth,
-    opacity,
+    fontFamily,
   ]);
 
   fabric.Object.prototype.set({

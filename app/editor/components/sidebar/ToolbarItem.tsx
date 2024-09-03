@@ -11,6 +11,7 @@ type Props = {
   style?: any;
   children?: React.ReactNode;
   label: string;
+  className?: string;
 };
 export function ToolbarItem({
   type,
@@ -18,6 +19,7 @@ export function ToolbarItem({
   style,
   label,
   children,
+  className,
   onClick,
 }: Props) {
   return (
@@ -26,7 +28,7 @@ export function ToolbarItem({
         onClick={() => onClick(type!)}
         size="icon"
         variant="ghost"
-        className={cn(type && activeTool === type && "bg-gray-100")}
+        className={cn(type && activeTool === type && "bg-gray-100", className)}
       >
         {children ? (
           children

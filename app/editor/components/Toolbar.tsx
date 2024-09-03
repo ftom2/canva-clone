@@ -2,7 +2,7 @@ import { ActiveTool, IEditor } from "../types";
 
 import { BsBorderWidth } from "react-icons/bs";
 import { ToolbarItem } from "./sidebar/ToolbarItem";
-import { ArrowDown, ArrowUp } from "lucide-react";
+import { ArrowDown, ArrowUp, ChevronDown } from "lucide-react";
 import { RxTransparencyGrid } from "react-icons/rx";
 import { isTextType } from "../utils";
 
@@ -18,6 +18,7 @@ export default function Toolbar({
 }: ToolbarProps) {
   const fillColor = editor?.getActiveFillColor();
   const strokeColor = editor?.getActiveStrokeColor();
+  const selectedFont = editor?.getActiveFontFamily();
 
   const selectedObjectType = editor?.selectedObjects[0]?.type;
 
@@ -58,6 +59,20 @@ export default function Toolbar({
               <BsBorderWidth className="size-4" />
             </ToolbarItem>
           </>
+        )}
+        {isText && (
+          <ToolbarItem
+            activeTool={activeTool}
+            onClick={onChangeActiveTool}
+            type="font"
+            label="font"
+            className="p-2 w-auto justify-start text-left"
+          >
+            <div className="max-w-[100px] truncate shrink-0">
+              {selectedFont}
+            </div>
+            <ChevronDown className="size-4 shrink-0" />
+          </ToolbarItem>
         )}
         <ToolbarItem
           onClick={() => editor?.bringForward()}

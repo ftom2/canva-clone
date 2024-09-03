@@ -2,13 +2,13 @@
 
 import { SidebarItem } from "./SidebarItem";
 import { MenuProps } from "../../types";
-import { sidebarItems } from "../../constants";
+import { SIDEBAR_ITEMS } from "../../constants";
 
 export const Sidebar = ({ activeTool, onChangeActiveTool }: MenuProps) => {
   return (
     <aside className="bg-white flex flex-col w-[100px] h-full border-r overflow-y-auto">
       <ul className="flex flex-col">
-        {sidebarItems.map((item) => (
+        {SIDEBAR_ITEMS.map((item) => (
           <SidebarItem
             key={item.label}
             icon={item.icon}

@@ -10,7 +10,7 @@ import {
 import * as material from "material-colors";
 import { ActiveTool } from "./types";
 
-export const exportMenuItems = [
+export const EXPORT_MENU_ITEMS = [
   {
     label: "JSON",
     description: "Save for later editing",
@@ -29,7 +29,7 @@ export const exportMenuItems = [
   },
 ];
 
-export const sidebarItems = [
+export const SIDEBAR_ITEMS = [
   {
     icon: LayoutTemplate,
     label: "Design",
@@ -78,7 +78,7 @@ export const JSON_KEYS = [
   "extension",
 ];
 
-export const filters = [
+export const FILTERS = [
   "none",
   "polaroid",
   "sepia",
@@ -104,7 +104,7 @@ export const filters = [
   "gamma",
 ];
 
-export const fonts = [
+export const FONTS = [
   "Arial",
   "Arial Black",
   "Verdana",
@@ -125,7 +125,7 @@ export const fonts = [
   "Lucida Console",
 ];
 
-export const selectionDependentTools = [
+export const SELECTION_DEPENDANT_TOOLS = [
   "fill",
   "font",
   "filter",
@@ -135,7 +135,7 @@ export const selectionDependentTools = [
   "stroke-width",
 ];
 
-export const colors = [
+export const COLORS = [
   material.red["500"],
   material.pink["500"],
   material.purple["500"],

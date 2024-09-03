@@ -20,7 +20,7 @@ import { Separator } from "@/components/ui/separator";
 import NavbarActionItem from "./NavbarActionItem";
 import { BsCloudCheck } from "react-icons/bs";
 import Dropdown from "@/components/Dropdown";
-import { exportMenuItems } from "../../constants";
+import { EXPORT_MENU_ITEMS } from "../../constants";
 import NavbarDropdownItem from "./NavbarDropdownItem";
 import { MenuProps } from "../../types";
 import { cn } from "@/lib/utils";
@@ -67,7 +67,7 @@ export default function Navbar({ activeTool, onChangeActiveTool }: MenuProps) {
               </Button>
             }
           >
-            {exportMenuItems.map((item) => (
+            {EXPORT_MENU_ITEMS.map((item) => (
               <NavbarDropdownItem key={item.label} item={item} />
             ))}
           </Dropdown>

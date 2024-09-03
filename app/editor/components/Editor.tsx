@@ -9,11 +9,12 @@ import Footer from "./Footer";
 import { ActiveTool } from "../types";
 import { ShapeSidebar } from "./sidebar/ShapeSidebar";
 import { FillSidebar } from "./sidebar/FillSidebar";
-import { selectionDependentTools } from "../constants";
+import { SELECTION_DEPENDANT_TOOLS } from "../constants";
 import { StrokeColorSidebar } from "./sidebar/StrokeColorSidebar";
 import { StrokeSidebar } from "./sidebar/StrokeSidebar";
 import { OpacitySidebar } from "./sidebar/OpacitySidebar";
 import { TextSidebar } from "./sidebar/TextSidebar";
+import { FontSidebar } from "./sidebar/FontSidebar";
 
 type Props = {};
 export default function Editor({}: Props) {
@@ -68,7 +69,7 @@ export default function Editor({}: Props) {
   useEffect(() => {
     if (
       !editor?.selectedObjects.length &&
-      selectionDependentTools.includes(activeTool)
+      SELECTION_DEPENDANT_TOOLS.includes(activeTool)
     ) {
       setActiveTool("select");
     }
@@ -108,6 +109,11 @@ export default function Editor({}: Props) {
           editor={editor}
         />
         <TextSidebar
+          activeTool={activeTool}
+          onChangeActiveTool={onChangeActiveTool}
+          editor={editor}
+        />
+        <FontSidebar
           activeTool={activeTool}
           onChangeActiveTool={onChangeActiveTool}
           editor={editor}

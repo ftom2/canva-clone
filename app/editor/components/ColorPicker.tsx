@@ -1,5 +1,5 @@
 import { ChromePicker, CirclePicker, ColorResult } from "react-color";
-import { colors } from "../constants";
+import { COLORS } from "../constants";
 import { rgbaObjectToString } from "../utils";
 
 interface ColorPickerProps {
@@ -22,7 +22,7 @@ export const ColorPicker = ({ value, onChange }: ColorPickerProps) => {
       />
       <CirclePicker
         color={value}
-        colors={colors}
+        colors={COLORS}
         onChangeComplete={onChangeComplete}
       />
     </div>

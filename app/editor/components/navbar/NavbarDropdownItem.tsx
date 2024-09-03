@@ -1,8 +1,8 @@
 import { DropdownMenuItem } from "@/components/ui/dropdown-menu";
 import { CiFileOn } from "react-icons/ci";
-import { exportMenuItems } from "../../constants";
+import { EXPORT_MENU_ITEMS } from "../../constants";
 
-type Item = (typeof exportMenuItems)[0];
+type Item = (typeof EXPORT_MENU_ITEMS)[0];
 type Props = {
   item: Item;
 };
