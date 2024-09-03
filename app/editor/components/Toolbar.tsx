@@ -1,11 +1,9 @@
-import { useEffect, useState } from "react";
 import { ActiveTool, IEditor } from "../types";
-import { Hint } from "@/components/Hint";
-import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
+
 import { BsBorderWidth } from "react-icons/bs";
 import { ToolbarItem } from "./sidebar/ToolbarItem";
 import { ArrowDown, ArrowUp } from "lucide-react";
+import { RxTransparencyGrid } from "react-icons/rx";
 
 interface ToolbarProps {
   editor?: IEditor;
@@ -60,6 +58,14 @@ export default function Toolbar({
         </ToolbarItem>
         <ToolbarItem onClick={() => editor?.sendBackwards()} label="send back">
           <ArrowDown className="size-4" />
+        </ToolbarItem>
+        <ToolbarItem
+          activeTool={activeTool}
+          onClick={onChangeActiveTool}
+          label="opacity"
+          type="opacity"
+        >
+          <RxTransparencyGrid className="size-4" />
         </ToolbarItem>
       </div>
     </div>

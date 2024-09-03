@@ -26,6 +26,8 @@ function buildEditor({
   strokeWidth,
   setStrokeWidth,
   selectedObjects,
+  opacity,
+  setOpacity,
 }: BuildEditorProps): IEditor {
   function getWorkspace() {
     return canvas.getObjects().find((obj) => obj.name === "clip");
@@ -53,6 +55,17 @@ function buildEditor({
   };
 
   return {
+    changeOpacity(value: number) {
+      setOpacity(value);
+      canvas.getActiveObjects().forEach((obj) => {
+        obj.set({ opacity: value });
+      });
+      canvas.requestRenderAll();
+    },
+    getActiveOpacity() {
+      const selectedObject = selectedObjects[0];
+      return selectedObject?.opacity ?? 1;
+    },
     bringForward() {
       canvas.getActiveObjects().forEach((obj) => {
         canvas.bringForward(obj);
@@ -193,6 +206,7 @@ export const useEditor = () => {
   const [fillColor, setFillColor] = useState<string>(FILL_COLOR);
   const [strokeColor, setStrokeColor] = useState<string>(STROKE_COLOR);
   const [strokeWidth, setStrokeWidth] = useState<number>(STROKE_WIDTH);
+  const [opacity, setOpacity] = useState<number>(1);
   const [strokeDashArray, setStrokeDashArray] =
     useState<number[]>(STROKE_DASH_ARRAY);
 
@@ -220,6 +234,8 @@ export const useEditor = () => {
         selectedObjects,
         strokeDashArray,
         setStrokeDashArray,
+        opacity,
+        setOpacity,
       });
     }
     return undefined;
@@ -230,6 +246,7 @@ export const useEditor = () => {
     strokeColor,
     strokeDashArray,
     strokeWidth,
+    opacity,
   ]);
 
   fabric.Object.prototype.set({

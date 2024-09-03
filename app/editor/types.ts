@@ -44,11 +44,13 @@ export type BuildEditorProps = {
   strokeWidth: number;
   selectedObjects: fabric.Object[];
   strokeDashArray: number[];
+  opacity: number;
   // fontFamily: string;
   setStrokeDashArray: (value: number[]) => void;
   setFillColor: (value: string) => void;
   setStrokeColor: (value: string) => void;
   setStrokeWidth: (value: number) => void;
+  setOpacity: (value: number) => void;
   // setFontFamily: (value: string) => void;
 };
 
@@ -90,8 +92,8 @@ export interface IEditor {
   // getActiveFontFamily: () => string;
   // changeFontFamily: (value: string) => void;
   // addText: (value: string, options?: ITextboxOptions) => void;
-  // getActiveOpacity: () => number;
-  // changeOpacity: (value: number) => void;
+  getActiveOpacity: () => number;
+  changeOpacity: (value: number) => void;
   bringForward: () => void;
   sendBackwards: () => void;
   changeStrokeWidth: (value: number) => void;

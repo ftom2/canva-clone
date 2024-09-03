@@ -12,6 +12,7 @@ import { FillSidebar } from "./sidebar/FillSidebar";
 import { selectionDependentTools } from "../constants";
 import { StrokeColorSidebar } from "./sidebar/StrokeColorSidebar";
 import { StrokeSidebar } from "./sidebar/StrokeSidebar";
+import { OpacitySidebar } from "./sidebar/OpacitySidebar";
 
 type Props = {};
 export default function Editor({}: Props) {
@@ -42,6 +43,8 @@ export default function Editor({}: Props) {
     const canvas = new fabric.Canvas(canvasRef.current, {
       //this will make sure that even though we are clipping the canvas, we can still interact with the objects outside the workspace
       controlsAboveOverlay: true,
+      // this will make sure that when the user selects an object, it will not be on top of all other objects
+      // but rather it will maintain its current stacking order
       preserveObjectStacking: true,
     });
 
@@ -98,6 +101,12 @@ export default function Editor({}: Props) {
           onChangeActiveTool={onChangeActiveTool}
           editor={editor}
         />
+        <OpacitySidebar
+          activeTool={activeTool}
+          onChangeActiveTool={onChangeActiveTool}
+          editor={editor}
+        />
+
         <main className="bg-muted flex-1 overflow-auto relative flex flex-col">
           <Toolbar
             editor={editor}
