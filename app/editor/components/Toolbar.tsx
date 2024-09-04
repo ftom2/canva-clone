@@ -5,6 +5,10 @@ import { ToolbarItem } from "./sidebar/ToolbarItem";
 import { ArrowDown, ArrowUp, ChevronDown } from "lucide-react";
 import { RxTransparencyGrid } from "react-icons/rx";
 import { isTextType } from "../utils";
+import { cn } from "@/lib/utils";
+
+import { FaBold, FaItalic, FaStrikethrough } from "react-icons/fa";
+import { useMemo } from "react";
 
 interface ToolbarProps {
   editor?: IEditor;
@@ -19,10 +23,27 @@ export default function Toolbar({
   const fillColor = editor?.getActiveFillColor();
   const strokeColor = editor?.getActiveStrokeColor();
   const selectedFont = editor?.getActiveFontFamily();
-
+  const fontWeight = editor?.getActiveFontWeight();
+  const strikeThrough = useMemo(
+    () => editor?.getActiveFontStrikeThough(),
+    [editor]
+  );
+  const fontStyle = useMemo(() => editor?.getActiveFontStyle(), [editor]);
   const selectedObjectType = editor?.selectedObjects[0]?.type;
 
   const isText = isTextType(selectedObjectType);
+
+  function toggleBold() {
+    editor?.changeFontWeight((fontWeight as number) > 500 ? 500 : 700);
+  }
+
+  function toggleStrikeThrough() {
+    editor?.changeFontStrikeThrough(!strikeThrough);
+  }
+
+  function toggleFontStyle() {
+    editor?.changeFontStyle(fontStyle === "italic" ? "normal" : "italic");
+  }
 
   if (!editor?.selectedObjects.length) {
     return (
@@ -61,18 +82,50 @@ export default function Toolbar({
           </>
         )}
         {isText && (
-          <ToolbarItem
-            activeTool={activeTool}
-            onClick={onChangeActiveTool}
-            type="font"
-            label="font"
-            className="p-2 w-auto justify-start text-left"
-          >
-            <div className="max-w-[100px] truncate shrink-0">
-              {selectedFont}
-            </div>
-            <ChevronDown className="size-4 shrink-0" />
-          </ToolbarItem>
+          <div className="flex gap-2">
+            <ToolbarItem
+              activeTool={activeTool}
+              onClick={onChangeActiveTool}
+              type="font"
+              label="font"
+              className="p-2 w-auto justify-start text-left"
+            >
+              <div className="max-w-[100px] truncate shrink-0">
+                {selectedFont}
+              </div>
+              <ChevronDown className="size-4 shrink-0" />
+            </ToolbarItem>
+            <ToolbarItem
+              onClick={toggleBold}
+              label="Bold"
+              className={cn(
+                "p-2 w-auto justify-start text-left",
+                (fontWeight as number) > 500 && "bg-gray-100"
+              )}
+            >
+              <FaBold className="size-4" />
+            </ToolbarItem>
+            <ToolbarItem
+              onClick={toggleStrikeThrough}
+              label="Strikethrough"
+              className={cn(
+                "p-2 w-auto justify-start text-left",
+                strikeThrough && "bg-gray-100"
+              )}
+            >
+              <FaStrikethrough className="size-4" />
+            </ToolbarItem>
+            <ToolbarItem
+              onClick={toggleFontStyle}
+              label="Italic"
+              className={cn(
+                "p-2 w-auto justify-start text-left",
+                fontStyle === "italic" && "bg-gray-100"
+              )}
+            >
+              <FaItalic className="size-4" />
+            </ToolbarItem>
+          </div>
         )}
         <ToolbarItem
           onClick={() => editor?.bringForward()}

@@ -1,7 +1,7 @@
 import { useCallback, useMemo, useState } from "react";
 import { fabric } from "fabric";
 import { useAutoResize } from "./useAutoResize";
-import { BuildEditorProps, IEditor, ICanvas } from "../types";
+import { BuildEditorProps, IEditor, ICanvas, FontStyle } from "../types";
 import {
   CIRCLE_OPTIONS,
   RECTANGLE_OPTIONS,
@@ -13,6 +13,7 @@ import {
   STROKE_DASH_ARRAY,
   TEXT_OPTIONS,
   FONT_FAMILY,
+  FONT_WEIGHT,
 } from "../constants";
 import useCanvasEvents from "./useCanvasEvents";
 import { isTextType } from "../utils";
@@ -31,6 +32,12 @@ function buildEditor({
   setOpacity,
   fontFamily,
   setFontFamily,
+  fontWeight,
+  setFontWeight,
+  strikeThrough,
+  setStrikeThrough,
+  fontStyle,
+  setFontStyle,
 }: BuildEditorProps): IEditor {
   function getWorkspace() {
     return canvas.getObjects().find((obj) => obj.name === "clip");
@@ -58,6 +65,46 @@ function buildEditor({
   };
 
   return {
+    changeFontStyle(value) {
+      setFontStyle(value);
+      canvas.getActiveObjects().forEach((obj) => {
+        if (isTextType(obj.type)) {
+          (obj as fabric.Textbox).set({ fontStyle: value });
+        }
+      });
+      canvas.requestRenderAll();
+    },
+    getActiveFontStyle() {
+      const selectedObject = selectedObjects[0] as fabric.Textbox;
+      return selectedObject?.fontStyle ?? (fontStyle as FontStyle);
+    },
+    changeFontStrikeThrough() {
+      setStrikeThrough(!strikeThrough);
+      canvas.getActiveObjects().forEach((obj) => {
+        if (isTextType(obj.type)) {
+          const text = obj as fabric.Textbox;
+          text.set({ linethrough: !text.linethrough });
+        }
+      });
+      canvas.requestRenderAll();
+    },
+    getActiveFontStrikeThough() {
+      const selectedObject = selectedObjects[0] as fabric.Textbox;
+      return selectedObject?.linethrough ?? strikeThrough;
+    },
+    changeFontWeight(value: number) {
+      setFontWeight(value);
+      canvas.getActiveObjects().forEach((obj) => {
+        if (isTextType(obj.type)) {
+          (obj as fabric.Textbox).set({ fontWeight: value });
+        }
+      });
+      canvas.requestRenderAll();
+    },
+    getActiveFontWeight() {
+      const selectedObject = selectedObjects[0] as fabric.Textbox;
+      return (selectedObject?.fontWeight as number) ?? fontWeight;
+    },
     changeFontFamily(value: string) {
       setFontFamily(value);
       canvas.getActiveObjects().forEach((obj) => {
@@ -230,10 +277,13 @@ export const useEditor = () => {
   const [fillColor, setFillColor] = useState<string>(FILL_COLOR);
   const [strokeColor, setStrokeColor] = useState<string>(STROKE_COLOR);
   const [strokeWidth, setStrokeWidth] = useState<number>(STROKE_WIDTH);
-  const [opacity, setOpacity] = useState<number>(1);
+  const [, setOpacity] = useState<number>(1);
   const [strokeDashArray, setStrokeDashArray] =
     useState<number[]>(STROKE_DASH_ARRAY);
   const [fontFamily, setFontFamily] = useState<string>(FONT_FAMILY);
+  const [fontWeight, setFontWeight] = useState<number>(FONT_WEIGHT);
+  const [strikeThrough, setStrikeThrough] = useState(false);
+  const [fontStyle, setFontStyle] = useState("normal");
 
   useAutoResize({
     canvas,
@@ -262,6 +312,12 @@ export const useEditor = () => {
         setOpacity,
         fontFamily,
         setFontFamily,
+        fontWeight,
+        setFontWeight,
+        strikeThrough,
+        setStrikeThrough,
+        fontStyle,
+        setFontStyle,
       });
     }
     return undefined;
@@ -273,6 +329,9 @@ export const useEditor = () => {
     strokeDashArray,
     strokeWidth,
     fontFamily,
+    fontWeight,
+    strikeThrough,
+    fontStyle,
   ]);
 
   fabric.Object.prototype.set({

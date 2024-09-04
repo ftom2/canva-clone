@@ -30,6 +30,8 @@ export interface EditorHookProps {
   }) => void;
 }
 
+export type FontStyle = "" | "normal" | "italic" | "oblique";
+
 export type BuildEditorProps = {
   // undo: () => void;
   // redo: () => void;
@@ -46,12 +48,18 @@ export type BuildEditorProps = {
   selectedObjects: fabric.Object[];
   strokeDashArray: number[];
   fontFamily: string;
+  fontWeight: number;
+  strikeThrough: boolean;
+  fontStyle: string;
   setStrokeDashArray: (value: number[]) => void;
   setFillColor: (value: string) => void;
   setStrokeColor: (value: string) => void;
   setStrokeWidth: (value: number) => void;
   setOpacity: (value: number) => void;
   setFontFamily: (value: string) => void;
+  setFontWeight: (value: number) => void;
+  setStrikeThrough: (value: boolean) => void;
+  setFontStyle: (value: FontStyle) => void;
 };
 
 export interface IEditor {
@@ -83,12 +91,12 @@ export interface IEditor {
   // getActiveTextAlign: () => string;
   // changeFontUnderline: (value: boolean) => void;
   // getActiveFontUnderline: () => boolean;
-  // changeFontLinethrough: (value: boolean) => void;
-  // getActiveFontLinethrough: () => boolean;
-  // changeFontStyle: (value: string) => void;
-  // getActiveFontStyle: () => string;
-  // changeFontWeight: (value: number) => void;
-  // getActiveFontWeight: () => number;
+  changeFontStrikeThrough: (value: boolean) => void;
+  getActiveFontStrikeThough: () => boolean;
+  changeFontStyle: (value: FontStyle) => void;
+  getActiveFontStyle: () => FontStyle;
+  changeFontWeight: (value: number) => void;
+  getActiveFontWeight: () => number;
   getActiveFontFamily: () => string;
   changeFontFamily: (value: string) => void;
   addText: (value: string, options?: ITextboxOptions) => void;
