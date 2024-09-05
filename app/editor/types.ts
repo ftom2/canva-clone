@@ -48,9 +48,10 @@ export type BuildEditorProps = {
   selectedObjects: fabric.Object[];
   strokeDashArray: number[];
   fontFamily: string;
+  fontStyle: string;
   fontWeight: number;
   strikeThrough: boolean;
-  fontStyle: string;
+  fontUnderline: boolean;
   setStrokeDashArray: (value: number[]) => void;
   setFillColor: (value: string) => void;
   setStrokeColor: (value: string) => void;
@@ -60,6 +61,7 @@ export type BuildEditorProps = {
   setFontWeight: (value: number) => void;
   setStrikeThrough: (value: boolean) => void;
   setFontStyle: (value: FontStyle) => void;
+  setFontUnderline: (value: boolean) => void;
 };
 
 export interface IEditor {
@@ -89,8 +91,8 @@ export interface IEditor {
   // getActiveFontSize: () => number;
   // changeTextAlign: (value: string) => void;
   // getActiveTextAlign: () => string;
-  // changeFontUnderline: (value: boolean) => void;
-  // getActiveFontUnderline: () => boolean;
+  changeFontUnderline: (value: boolean) => void;
+  getActiveFontUnderline: () => boolean;
   changeFontStrikeThrough: (value: boolean) => void;
   getActiveFontStrikeThough: () => boolean;
   changeFontStyle: (value: FontStyle) => void;

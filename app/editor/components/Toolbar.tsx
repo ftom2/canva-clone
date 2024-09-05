@@ -7,7 +7,7 @@ import { RxTransparencyGrid } from "react-icons/rx";
 import { isTextType } from "../utils";
 import { cn } from "@/lib/utils";
 
-import { FaBold, FaItalic, FaStrikethrough } from "react-icons/fa";
+import { FaBold, FaItalic, FaStrikethrough, FaUnderline } from "react-icons/fa";
 import { useMemo } from "react";
 
 interface ToolbarProps {
@@ -29,6 +29,10 @@ export default function Toolbar({
     [editor]
   );
   const fontStyle = useMemo(() => editor?.getActiveFontStyle(), [editor]);
+  const fontUnderline = useMemo(
+    () => editor?.getActiveFontUnderline(),
+    [editor]
+  );
   const selectedObjectType = editor?.selectedObjects[0]?.type;
 
   const isText = isTextType(selectedObjectType);
@@ -43,6 +47,9 @@ export default function Toolbar({
 
   function toggleFontStyle() {
     editor?.changeFontStyle(fontStyle === "italic" ? "normal" : "italic");
+  }
+  function toggleFontUnderline() {
+    editor?.changeFontUnderline(!fontUnderline);
   }
 
   if (!editor?.selectedObjects.length) {
@@ -124,6 +131,16 @@ export default function Toolbar({
               )}
             >
               <FaItalic className="size-4" />
+            </ToolbarItem>
+            <ToolbarItem
+              onClick={toggleFontUnderline}
+              label="Underline"
+              className={cn(
+                "p-2 w-auto justify-start text-left",
+                fontUnderline && "bg-gray-100"
+              )}
+            >
+              <FaUnderline className="size-4" />
             </ToolbarItem>
           </div>
         )}

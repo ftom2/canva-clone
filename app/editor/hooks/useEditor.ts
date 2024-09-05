@@ -38,6 +38,8 @@ function buildEditor({
   setStrikeThrough,
   fontStyle,
   setFontStyle,
+  fontUnderline,
+  setFontUnderline,
 }: BuildEditorProps): IEditor {
   function getWorkspace() {
     return canvas.getObjects().find((obj) => obj.name === "clip");
@@ -65,6 +67,20 @@ function buildEditor({
   };
 
   return {
+    changeFontUnderline() {
+      setFontUnderline(!fontUnderline);
+      canvas.getActiveObjects().forEach((obj) => {
+        if (isTextType(obj.type)) {
+          const text = obj as fabric.Textbox;
+          text.set({ underline: !text.underline });
+        }
+      });
+      canvas.requestRenderAll();
+    },
+    getActiveFontUnderline() {
+      const selectedObject = selectedObjects[0] as fabric.Textbox;
+      return selectedObject?.underline ?? fontUnderline;
+    },
     changeFontStyle(value) {
       setFontStyle(value);
       canvas.getActiveObjects().forEach((obj) => {
@@ -283,6 +299,7 @@ export const useEditor = () => {
   const [fontFamily, setFontFamily] = useState<string>(FONT_FAMILY);
   const [fontWeight, setFontWeight] = useState<number>(FONT_WEIGHT);
   const [strikeThrough, setStrikeThrough] = useState(false);
+  const [fontUnderline, setFontUnderline] = useState(false);
   const [fontStyle, setFontStyle] = useState("normal");
 
   useAutoResize({
@@ -318,6 +335,8 @@ export const useEditor = () => {
         setStrikeThrough,
         fontStyle,
         setFontStyle,
+        fontUnderline,
+        setFontUnderline,
       });
     }
     return undefined;
@@ -332,6 +351,7 @@ export const useEditor = () => {
     fontWeight,
     strikeThrough,
     fontStyle,
+    fontUnderline,
   ]);
 
   fabric.Object.prototype.set({
