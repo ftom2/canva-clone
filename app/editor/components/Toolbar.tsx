@@ -2,7 +2,14 @@ import { ActiveTool, IEditor } from "../types";
 
 import { BsBorderWidth } from "react-icons/bs";
 import { ToolbarItem } from "./sidebar/ToolbarItem";
-import { ArrowDown, ArrowUp, ChevronDown } from "lucide-react";
+import {
+  AlignCenter,
+  AlignLeft,
+  AlignRight,
+  ArrowDown,
+  ArrowUp,
+  ChevronDown,
+} from "lucide-react";
 import { RxTransparencyGrid } from "react-icons/rx";
 import { isTextType } from "../utils";
 import { cn } from "@/lib/utils";
@@ -33,6 +40,7 @@ export default function Toolbar({
     () => editor?.getActiveFontUnderline(),
     [editor]
   );
+  const textAlign = useMemo(() => editor?.getActiveTextAlign(), [editor]);
   const selectedObjectType = editor?.selectedObjects[0]?.type;
 
   const isText = isTextType(selectedObjectType);
@@ -141,6 +149,37 @@ export default function Toolbar({
               )}
             >
               <FaUnderline className="size-4" />
+            </ToolbarItem>
+            <ToolbarItem
+              onClick={() => editor?.changeTextAlign("left")}
+              label="Align Left"
+              className={cn(
+                "p-2 w-auto justify-start text-left",
+                textAlign === "left" && "bg-gray-100"
+              )}
+            >
+              <AlignLeft className="size-4" />
+            </ToolbarItem>
+            <ToolbarItem
+              onClick={() => editor?.changeTextAlign("center")}
+              label="Align Center"
+              className={cn(
+                "p-2 w-auto justify-start text-left",
+                textAlign === "center" && "bg-gray-100"
+              )}
+            >
+              <AlignCenter className="size-4" />
+            </ToolbarItem>
+
+            <ToolbarItem
+              onClick={() => editor?.changeTextAlign("right")}
+              label="Align Right"
+              className={cn(
+                "p-2 w-auto justify-start text-left",
+                textAlign === "right" && "bg-gray-100"
+              )}
+            >
+              <AlignRight className="size-4" />
             </ToolbarItem>
           </div>
         )}

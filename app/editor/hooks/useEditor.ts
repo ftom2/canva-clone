@@ -40,6 +40,8 @@ function buildEditor({
   setFontStyle,
   fontUnderline,
   setFontUnderline,
+  textAlign,
+  setTextAlign,
 }: BuildEditorProps): IEditor {
   function getWorkspace() {
     return canvas.getObjects().find((obj) => obj.name === "clip");
@@ -67,6 +69,19 @@ function buildEditor({
   };
 
   return {
+    changeTextAlign(value) {
+      setTextAlign(value);
+      canvas.getActiveObjects().forEach((obj) => {
+        if (isTextType(obj.type)) {
+          (obj as fabric.Textbox).set({ textAlign: value });
+        }
+      });
+      canvas.requestRenderAll();
+    },
+    getActiveTextAlign() {
+      const selectedObject = selectedObjects[0] as fabric.Textbox;
+      return selectedObject?.textAlign ?? textAlign;
+    },
     changeFontUnderline() {
       setFontUnderline(!fontUnderline);
       canvas.getActiveObjects().forEach((obj) => {
@@ -301,6 +316,7 @@ export const useEditor = () => {
   const [strikeThrough, setStrikeThrough] = useState(false);
   const [fontUnderline, setFontUnderline] = useState(false);
   const [fontStyle, setFontStyle] = useState("normal");
+  const [textAlign, setTextAlign] = useState("left");
 
   useAutoResize({
     canvas,
@@ -337,6 +353,8 @@ export const useEditor = () => {
         setFontStyle,
         fontUnderline,
         setFontUnderline,
+        textAlign,
+        setTextAlign,
       });
     }
     return undefined;
@@ -352,6 +370,7 @@ export const useEditor = () => {
     strikeThrough,
     fontStyle,
     fontUnderline,
+    textAlign,
   ]);
 
   fabric.Object.prototype.set({
