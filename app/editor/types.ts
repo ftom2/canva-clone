@@ -53,6 +53,7 @@ export type BuildEditorProps = {
   strikeThrough: boolean;
   fontUnderline: boolean;
   textAlign: string;
+  fontSize: number;
   setStrokeDashArray: (value: number[]) => void;
   setFillColor: (value: string) => void;
   setStrokeColor: (value: string) => void;
@@ -64,6 +65,7 @@ export type BuildEditorProps = {
   setFontStyle: (value: FontStyle) => void;
   setFontUnderline: (value: boolean) => void;
   setTextAlign: (value: string) => void;
+  setFontSize: (value: number) => void;
 };
 
 export interface IEditor {
@@ -89,8 +91,8 @@ export interface IEditor {
   // changeImageFilter: (value: string) => void;
   // addImage: (value: string) => void;
   // delete: () => void;
-  // changeFontSize: (value: number) => void;
-  // getActiveFontSize: () => number;
+  changeFontSize: (value: number) => void;
+  getActiveFontSize: () => number;
   changeTextAlign: (value: string) => void;
   getActiveTextAlign: () => string;
   changeFontUnderline: (value: boolean) => void;

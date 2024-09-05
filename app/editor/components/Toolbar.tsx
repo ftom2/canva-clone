@@ -16,6 +16,7 @@ import { cn } from "@/lib/utils";
 
 import { FaBold, FaItalic, FaStrikethrough, FaUnderline } from "react-icons/fa";
 import { useMemo } from "react";
+import { NumberInput } from "./NumberInput";
 
 interface ToolbarProps {
   editor?: IEditor;
@@ -181,6 +182,12 @@ export default function Toolbar({
             >
               <AlignRight className="size-4" />
             </ToolbarItem>
+            <div>
+              <NumberInput
+                value={editor?.getActiveFontSize()}
+                onChange={(value) => editor?.changeFontSize(value)}
+              />
+            </div>
           </div>
         )}
         <ToolbarItem

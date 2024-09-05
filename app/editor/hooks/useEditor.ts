@@ -14,6 +14,7 @@ import {
   TEXT_OPTIONS,
   FONT_FAMILY,
   FONT_WEIGHT,
+  FONT_SIZE,
 } from "../constants";
 import useCanvasEvents from "./useCanvasEvents";
 import { isTextType } from "../utils";
@@ -42,6 +43,8 @@ function buildEditor({
   setFontUnderline,
   textAlign,
   setTextAlign,
+  fontSize,
+  setFontSize,
 }: BuildEditorProps): IEditor {
   function getWorkspace() {
     return canvas.getObjects().find((obj) => obj.name === "clip");
@@ -69,6 +72,19 @@ function buildEditor({
   };
 
   return {
+    changeFontSize(value: number) {
+      setFontSize(value);
+      canvas.getActiveObjects().forEach((obj) => {
+        if (isTextType(obj.type)) {
+          (obj as fabric.Textbox).set({ fontSize: value });
+        }
+      });
+      canvas.requestRenderAll();
+    },
+    getActiveFontSize() {
+      const selectedObject = selectedObjects[0] as fabric.Textbox;
+      return selectedObject?.fontSize ?? fontSize;
+    },
     changeTextAlign(value) {
       setTextAlign(value);
       canvas.getActiveObjects().forEach((obj) => {
@@ -317,6 +333,7 @@ export const useEditor = () => {
   const [fontUnderline, setFontUnderline] = useState(false);
   const [fontStyle, setFontStyle] = useState("normal");
   const [textAlign, setTextAlign] = useState("left");
+  const [fontSize, setFontSize] = useState(FONT_SIZE);
 
   useAutoResize({
     canvas,
@@ -355,6 +372,8 @@ export const useEditor = () => {
         setFontUnderline,
         textAlign,
         setTextAlign,
+        fontSize,
+        setFontSize,
       });
     }
     return undefined;
@@ -371,6 +390,7 @@ export const useEditor = () => {
     fontStyle,
     fontUnderline,
     textAlign,
+    fontSize,
   ]);
 
   fabric.Object.prototype.set({

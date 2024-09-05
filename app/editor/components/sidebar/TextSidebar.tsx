@@ -52,7 +52,7 @@ export const TextSidebar = ({
             className="w-full h-16 text-lg font-semibold"
             variant="secondary"
             onClick={() =>
-              editor?.addText("Seb Heading", {
+              editor?.addText("Sub Heading", {
                 fontSize: 44,
                 fontWeight: 600,
               })
