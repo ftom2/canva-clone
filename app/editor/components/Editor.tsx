@@ -15,6 +15,7 @@ import { StrokeSidebar } from "./sidebar/StrokeSidebar";
 import { OpacitySidebar } from "./sidebar/OpacitySidebar";
 import { TextSidebar } from "./sidebar/TextSidebar";
 import { FontSidebar } from "./sidebar/FontSidebar";
+import { ImagesSidebar } from "./sidebar/ImagesSidebar";
 
 type Props = {};
 export default function Editor({}: Props) {
@@ -117,6 +118,11 @@ export default function Editor({}: Props) {
           activeTool={activeTool}
           onChangeActiveTool={onChangeActiveTool}
           editor={editor}
+        />
+        <ImagesSidebar
+          editor={editor}
+          activeTool={activeTool}
+          onChangeActiveTool={onChangeActiveTool}
         />
         <main className="bg-muted flex-1 overflow-auto relative flex flex-col">
           <Toolbar

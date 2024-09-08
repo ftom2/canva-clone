@@ -1,5 +1,6 @@
 This is a [canva](https://www.canva.com/) clone made with:
 
+- [Hono](https://hono.dev/) - api server
 - [Next.js](https://nextjs.org/) 
 - [ShadCN](https://ui.shadcn.com/)
 - [tailwindcss](https://tailwindcss.com/)

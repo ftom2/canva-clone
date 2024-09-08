@@ -5,10 +5,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 
 import { ToolSidebarClose } from "./ToolSidebarClose";
 
-import { useCallback, useMemo, useState } from "react";
-import { Label } from "@/components/ui/label";
-import { Slider } from "@/components/ui/slider";
-import { Input } from "@/components/ui/input";
+import { useCallback } from "react";
 import { Button } from "@/components/ui/button";
 import { FONTS } from "../../constants";
 
