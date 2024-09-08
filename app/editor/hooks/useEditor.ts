@@ -72,6 +72,13 @@ function buildEditor({
   };
 
   return {
+    delete() {
+      canvas.getActiveObjects().forEach((obj) => {
+        canvas.remove(obj);
+      });
+      canvas.discardActiveObject();
+      canvas.requestRenderAll();
+    },
     changeFontSize(value: number) {
       setFontSize(value);
       canvas.getActiveObjects().forEach((obj) => {

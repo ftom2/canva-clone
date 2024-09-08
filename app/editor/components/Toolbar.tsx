@@ -9,6 +9,7 @@ import {
   ArrowDown,
   ArrowUp,
   ChevronDown,
+  Trash,
 } from "lucide-react";
 import { RxTransparencyGrid } from "react-icons/rx";
 import { isTextType } from "../utils";
@@ -206,6 +207,9 @@ export default function Toolbar({
           type="opacity"
         >
           <RxTransparencyGrid className="size-4" />
+        </ToolbarItem>
+        <ToolbarItem onClick={() => editor?.delete()} label="delete">
+          <Trash className="size-4 text-red-500" />
         </ToolbarItem>
       </div>
     </div>
