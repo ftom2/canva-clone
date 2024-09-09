@@ -1,3 +1,4 @@
+import { FilterType } from "./../types";
 import { useCallback, useMemo, useState } from "react";
 import { fabric } from "fabric";
 import { useAutoResize } from "./useAutoResize";
@@ -17,7 +18,7 @@ import {
   FONT_SIZE,
 } from "../constants";
 import useCanvasEvents from "./useCanvasEvents";
-import { isTextType } from "../utils";
+import { createFilter, isTextType } from "../utils";
 
 function buildEditor({
   canvas,
@@ -45,6 +46,8 @@ function buildEditor({
   setTextAlign,
   fontSize,
   setFontSize,
+  imageFilter,
+  setImageFilter,
 }: BuildEditorProps): IEditor {
   function getWorkspace() {
     return canvas.getObjects().find((obj) => obj.name === "clip");
@@ -73,14 +76,19 @@ function buildEditor({
 
   return {
     addImage(value: string) {
-      fabric.Image.fromURL(value, (image) => {
-        const workspace = getWorkspace();
-        console.log({ width: workspace?.width, height: workspace?.height });
+      fabric.Image.fromURL(
+        value,
+        (image) => {
+          const workspace = getWorkspace();
 
-        image.scaleToWidth(workspace?.width ?? 0);
-        image.scaleToHeight(workspace?.height ?? 0);
-        addToCanvas(image);
-      });
+          image.scaleToWidth(workspace?.width ?? 0);
+          image.scaleToHeight(workspace?.height ?? 0);
+          addToCanvas(image);
+        },
+        {
+          crossOrigin: "anonymous",
+        }
+      );
     },
     delete() {
       canvas.getActiveObjects().forEach((obj) => {
@@ -88,6 +96,29 @@ function buildEditor({
       });
       canvas.discardActiveObject();
       canvas.requestRenderAll();
+    },
+    changeImageFilter(value: FilterType) {
+      setImageFilter(value);
+      canvas.getActiveObjects().forEach((obj) => {
+        if (obj.type === "image") {
+          const imageObj = obj as fabric.Image;
+          const filter = createFilter(value);
+          imageObj.filters = filter ? [filter] : [];
+          imageObj.applyFilters();
+          canvas.requestRenderAll();
+        }
+      });
+      canvas.requestRenderAll();
+    },
+    getActiveImageFilter() {
+      const selectedObject = selectedObjects[0];
+      if (selectedObject?.type === "image") {
+        const imageObject = selectedObject as fabric.Image;
+        const filter = imageObject.filters?.[0];
+
+        return (filter as any)?.type ?? "none";
+      }
+      return "none";
     },
     changeFontSize(value: number) {
       setFontSize(value);
@@ -351,6 +382,7 @@ export const useEditor = () => {
   const [fontStyle, setFontStyle] = useState("normal");
   const [textAlign, setTextAlign] = useState("left");
   const [fontSize, setFontSize] = useState(FONT_SIZE);
+  const [imageFilter, setImageFilter] = useState<FilterType>("none");
 
   useAutoResize({
     canvas,
@@ -391,6 +423,8 @@ export const useEditor = () => {
         setTextAlign,
         fontSize,
         setFontSize,
+        imageFilter,
+        setImageFilter,
       });
     }
     return undefined;
@@ -408,6 +442,7 @@ export const useEditor = () => {
     fontUnderline,
     textAlign,
     fontSize,
+    imageFilter,
   ]);
 
   fabric.Object.prototype.set({

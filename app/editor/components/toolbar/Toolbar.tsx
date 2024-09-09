@@ -4,10 +4,11 @@ import { BsBorderWidth } from "react-icons/bs";
 import { ToolbarItem } from "./ToolbarItem";
 import { ArrowDown, ArrowUp, Trash } from "lucide-react";
 import { RxTransparencyGrid } from "react-icons/rx";
+import { TbColorFilter } from "react-icons/tb";
 import { isTextType } from "../../utils";
 
-import { useMemo } from "react";
 import { ToolbarTextItems } from "./ToolbarTextItems";
+import { cn } from "@/lib/utils";
 
 export default function Toolbar({
   editor,
@@ -66,6 +67,19 @@ export default function Toolbar({
             activeTool={activeTool}
             onChangeActiveTool={onChangeActiveTool}
           />
+        )}
+        {isImage && (
+          <ToolbarItem
+            type="filter"
+            onClick={onChangeActiveTool}
+            label="Filters"
+            className={cn(
+              "p-2 w-auto justify-start text-left",
+              activeTool === "filter" && "bg-gray-100"
+            )}
+          >
+            <TbColorFilter className="size-4" />
+          </ToolbarItem>
         )}
         <ToolbarItem
           onClick={() => editor?.bringForward()}

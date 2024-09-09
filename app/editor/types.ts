@@ -18,6 +18,31 @@ export type ActiveTool =
   | "remove-bg"
   | "templates";
 
+export type FilterType =
+  | "none"
+  | "greyscale"
+  | "polaroid"
+  | "sepia"
+  | "kodachrome"
+  | "contrast"
+  | "brightness"
+  | "brownie"
+  | "vintage"
+  | "technicolor"
+  | "pixelate"
+  | "invert"
+  | "blur"
+  | "sharpen"
+  | "emboss"
+  | "removecolor"
+  | "blacknwhite"
+  | "vibrance"
+  | "blendcolor"
+  | "huerotate"
+  | "resize"
+  | "gamma"
+  | "saturation";
+
 export interface EditorHookProps {
   defaultState?: string;
   defaultWidth?: number;
@@ -54,6 +79,7 @@ export type BuildEditorProps = {
   fontUnderline: boolean;
   textAlign: string;
   fontSize: number;
+  imageFilter: FilterType;
   setStrokeDashArray: (value: number[]) => void;
   setFillColor: (value: string) => void;
   setStrokeColor: (value: string) => void;
@@ -66,6 +92,7 @@ export type BuildEditorProps = {
   setFontUnderline: (value: boolean) => void;
   setTextAlign: (value: string) => void;
   setFontSize: (value: number) => void;
+  setImageFilter: (value: FilterType) => void;
 };
 
 export interface IEditor {
@@ -88,7 +115,8 @@ export interface IEditor {
   // disableDrawingMode: () => void;
   // onCopy: () => void;
   // onPaste: () => void;
-  // changeImageFilter: (value: string) => void;
+  changeImageFilter: (value: FilterType) => void;
+  getActiveImageFilter: () => FilterType;
   addImage: (value: string) => void;
   delete: () => void;
   changeFontSize: (value: number) => void;

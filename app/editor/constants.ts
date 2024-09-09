@@ -8,7 +8,7 @@ import {
   Type,
 } from "lucide-react";
 import * as material from "material-colors";
-import { ActiveTool } from "./types";
+import { ActiveTool, FilterType } from "./types";
 
 export const EXPORT_MENU_ITEMS = [
   {
@@ -78,7 +78,7 @@ export const JSON_KEYS = [
   "extension",
 ];
 
-export const FILTERS = [
+export const FILTERS: FilterType[] = [
   "none",
   "polaroid",
   "sepia",

@@ -1,6 +1,7 @@
 import { uuid } from "uuidv4";
 import { fabric } from "fabric";
 import type { RGBColor } from "react-color";
+import { FilterType } from "./types";
 
 export function transformText(objects: any) {
   if (!objects) return;
@@ -38,7 +39,7 @@ export function rgbaObjectToString(rgba: RGBColor | "transparent") {
   return `rgba(${rgba.r}, ${rgba.g}, ${rgba.b}, ${alpha})`;
 }
 
-export const createFilter = (value: string) => {
+export const createFilter = (value: FilterType) => {
   let effect;
 
   switch (value) {
@@ -129,14 +130,14 @@ export const createFilter = (value: string) => {
       effect = new fabric.Image.filters.Gamma({
         gamma: [1, 0.5, 2.1],
       });
+      break;
     case "saturation":
       effect = new fabric.Image.filters.Saturation({
         saturation: 0.7,
       });
       break;
     default:
-      effect = null;
-      return;
+      return null;
   }
 
   return effect;
