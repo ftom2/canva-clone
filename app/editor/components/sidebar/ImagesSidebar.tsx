@@ -10,6 +10,7 @@ import { useGetImages } from "@/app/images/hooks/use-get-images";
 import { AlertTriangle, Loader } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { UploadButton } from "@/lib/uploadThing";
 
 export const ImagesSidebar = ({
   editor,
@@ -33,6 +34,25 @@ export const ImagesSidebar = ({
         title="Images"
         description="Upload an image or select one from the library"
       />
+      <div className="p-4 border-b">
+        <UploadButton
+          appearance={{
+            button: "w-full text-sm font-medium ",
+            allowedContent: "hidden",
+          }}
+          content={{
+            button: "Upload Image",
+          }}
+          endpoint="imageUploader"
+          onClientUploadComplete={(res) => {
+            editor?.addImage(res[0].url);
+          }}
+          onUploadError={(error: Error) => {
+            // Do something with the error.
+            alert(`ERROR! ${error.message}`);
+          }}
+        />
+      </div>
       {isLoading && (
         <div className="grid place-items-center w-full h-screen">
           <Loader className="size-8 text-muted-foreground animate-spin" />
