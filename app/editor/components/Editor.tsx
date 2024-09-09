@@ -4,7 +4,7 @@ import { useEditor } from "../hooks/useEditor";
 import { useCallback, useEffect, useRef, useState } from "react";
 import Navbar from "./navbar/Navbar";
 import { Sidebar } from "./sidebar/Sidebar";
-import Toolbar from "./Toolbar";
+import Toolbar from "./toolbar/Toolbar";
 import Footer from "./Footer";
 import { ActiveTool } from "../types";
 import { ShapeSidebar } from "./sidebar/ShapeSidebar";
