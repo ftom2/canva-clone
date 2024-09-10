@@ -64,8 +64,8 @@ export type BuildEditorProps = {
   // canUndo: () => boolean;
   // canRedo: () => boolean;
   // autoZoom: () => void;
-  // copy: () => void;
-  // paste: () => void;
+  copy: () => void;
+  paste: () => void;
   canvas: fabric.Canvas;
   fillColor: string;
   strokeColor: string;
@@ -113,8 +113,8 @@ export interface IEditor {
   // changeSize: (value: { width: number; height: number }) => void;
   // enableDrawingMode: () => void;
   // disableDrawingMode: () => void;
-  // onCopy: () => void;
-  // onPaste: () => void;
+  onCopy: () => void;
+  onPaste: () => void;
   changeImageFilter: (value: FilterType) => void;
   getActiveImageFilter: () => FilterType;
   addImage: (value: string) => void;

@@ -9,6 +9,7 @@ import { isTextType } from "../../utils";
 
 import { ToolbarTextItems } from "./ToolbarTextItems";
 import { cn } from "@/lib/utils";
+import { IoDuplicate } from "react-icons/io5";
 
 export default function Toolbar({
   editor,
@@ -98,6 +99,17 @@ export default function Toolbar({
         >
           <RxTransparencyGrid className="size-4" />
         </ToolbarItem>
+        {!isImage && (
+          <ToolbarItem
+            onClick={() => {
+              editor?.onCopy();
+              editor?.onPaste();
+            }}
+            label="duplicate"
+          >
+            <IoDuplicate className="size-4 " />
+          </ToolbarItem>
+        )}
         <ToolbarItem onClick={() => editor?.delete()} label="delete">
           <Trash className="size-4 text-red-500" />
         </ToolbarItem>

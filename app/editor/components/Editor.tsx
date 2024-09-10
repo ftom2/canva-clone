@@ -17,6 +17,7 @@ import { TextSidebar } from "./sidebar/TextSidebar";
 import { FontSidebar } from "./sidebar/FontSidebar";
 import { ImagesSidebar } from "./sidebar/ImagesSidebar";
 import { FilterSidebar } from "./sidebar/FilterSidebar";
+import { AISidebar } from "./sidebar/AISidebar";
 
 type Props = {};
 export default function Editor({}: Props) {
@@ -126,6 +127,11 @@ export default function Editor({}: Props) {
           onChangeActiveTool={onChangeActiveTool}
         />
         <FilterSidebar
+          editor={editor}
+          activeTool={activeTool}
+          onChangeActiveTool={onChangeActiveTool}
+        />
+        <AISidebar
           editor={editor}
           activeTool={activeTool}
           onChangeActiveTool={onChangeActiveTool}

@@ -1,3 +1,4 @@
+import { copy } from "./../../../node_modules/effect/src/Array";
 import { FilterType } from "./../types";
 import { useCallback, useMemo, useState } from "react";
 import { fabric } from "fabric";
@@ -19,6 +20,7 @@ import {
 } from "../constants";
 import useCanvasEvents from "./useCanvasEvents";
 import { createFilter, isTextType } from "../utils";
+import { useClipboard } from "./useClipboard";
 
 function buildEditor({
   canvas,
@@ -48,6 +50,8 @@ function buildEditor({
   setFontSize,
   imageFilter,
   setImageFilter,
+  copy,
+  paste,
 }: BuildEditorProps): IEditor {
   function getWorkspace() {
     return canvas.getObjects().find((obj) => obj.name === "clip");
@@ -75,6 +79,12 @@ function buildEditor({
   };
 
   return {
+    onCopy() {
+      copy();
+    },
+    onPaste() {
+      paste();
+    },
     addImage(value: string) {
       fabric.Image.fromURL(
         value,
@@ -83,6 +93,7 @@ function buildEditor({
 
           image.scaleToWidth(workspace?.width ?? 0);
           image.scaleToHeight(workspace?.height ?? 0);
+          image.crossOrigin = "anonymous";
           addToCanvas(image);
         },
         {
@@ -384,8 +395,9 @@ export const useEditor = () => {
   const [fontSize, setFontSize] = useState(FONT_SIZE);
   const [imageFilter, setImageFilter] = useState<FilterType>("none");
 
+  const { copy, paste } = useClipboard({ canvas: canvas ?? undefined });
   useAutoResize({
-    canvas,
+    canvas: canvas,
     container,
   });
 
@@ -425,16 +437,18 @@ export const useEditor = () => {
         setFontSize,
         imageFilter,
         setImageFilter,
+        copy,
+        paste,
       });
     }
     return undefined;
   }, [
     canvas,
     fillColor,
-    selectedObjects,
     strokeColor,
-    strokeDashArray,
     strokeWidth,
+    selectedObjects,
+    strokeDashArray,
     fontFamily,
     fontWeight,
     strikeThrough,
@@ -443,6 +457,8 @@ export const useEditor = () => {
     textAlign,
     fontSize,
     imageFilter,
+    copy,
+    paste,
   ]);
 
   fabric.Object.prototype.set({
