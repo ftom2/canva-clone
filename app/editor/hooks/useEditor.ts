@@ -22,6 +22,7 @@ import useCanvasEvents from "./useCanvasEvents";
 import { createFilter, isTextType } from "../utils";
 import { useClipboard } from "./useClipboard";
 import { useHistory } from "./useHistory";
+import { useHotkeys } from "./useHotkeys";
 
 function buildEditor({
   save,
@@ -467,6 +468,14 @@ export const useEditor = () => {
     setSelectedObjects,
   });
 
+  useHotkeys({
+    canvas,
+    undo,
+    redo,
+    save,
+    copy,
+    paste,
+  });
   const editor = useMemo(() => {
     if (canvas) {
       return buildEditor({
