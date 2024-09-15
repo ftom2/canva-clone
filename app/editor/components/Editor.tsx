@@ -18,6 +18,7 @@ import { FontSidebar } from "./sidebar/FontSidebar";
 import { ImagesSidebar } from "./sidebar/ImagesSidebar";
 import { FilterSidebar } from "./sidebar/FilterSidebar";
 import { AISidebar } from "./sidebar/AISidebar";
+import { DrawSidebar } from "./sidebar/DrawSidebar";
 
 type Props = {};
 export default function Editor({}: Props) {
@@ -29,19 +30,18 @@ export default function Editor({}: Props) {
 
   const onChangeActiveTool = useCallback(
     (tool: ActiveTool) => {
-      if (tool === activeTool) return setActiveTool("select");
-
       if (tool === "draw") {
-        // TODO: enable draw tool
+        editor?.enableDrawingMode();
       }
 
       if (activeTool === "draw") {
-        // TODO: disable draw tool
+        editor?.disableDrawingMode();
       }
+      if (tool === activeTool) return setActiveTool("select");
 
       setActiveTool(tool);
     },
-    [activeTool]
+    [activeTool, editor]
   );
 
   useEffect(() => {
@@ -132,6 +132,11 @@ export default function Editor({}: Props) {
           onChangeActiveTool={onChangeActiveTool}
         />
         <AISidebar
+          editor={editor}
+          activeTool={activeTool}
+          onChangeActiveTool={onChangeActiveTool}
+        />
+        <DrawSidebar
           editor={editor}
           activeTool={activeTool}
           onChangeActiveTool={onChangeActiveTool}

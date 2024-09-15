@@ -79,6 +79,16 @@ function buildEditor({
   };
 
   return {
+    enableDrawingMode() {
+      canvas.discardActiveObject();
+      canvas.requestRenderAll();
+      canvas.isDrawingMode = true;
+      canvas.freeDrawingBrush.width = strokeWidth;
+      canvas.freeDrawingBrush.color = strokeColor;
+    },
+    disableDrawingMode() {
+      canvas.isDrawingMode = false;
+    },
     onCopy() {
       copy();
     },
@@ -273,6 +283,7 @@ function buildEditor({
         }
         obj.set({ stroke: value });
       });
+      canvas.freeDrawingBrush.color = value;
       canvas.requestRenderAll();
     },
     changeStrokeWidth(value: number) {
@@ -280,6 +291,8 @@ function buildEditor({
       canvas.getActiveObjects().forEach((obj) => {
         obj.set({ strokeWidth: value });
       });
+      canvas.freeDrawingBrush.width = value;
+
       canvas.requestRenderAll();
     },
     changeStrokeDashArray(value: number[]) {

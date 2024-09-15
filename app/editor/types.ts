@@ -111,8 +111,8 @@ export interface IEditor {
   // getWorkspace: () => fabric.Object | undefined;
   // changeBackground: (value: string) => void;
   // changeSize: (value: { width: number; height: number }) => void;
-  // enableDrawingMode: () => void;
-  // disableDrawingMode: () => void;
+  enableDrawingMode: () => void;
+  disableDrawingMode: () => void;
   onCopy: () => void;
   onPaste: () => void;
   changeImageFilter: (value: FilterType) => void;
