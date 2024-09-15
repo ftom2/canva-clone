@@ -16,12 +16,19 @@ import {
   FONT_FAMILY,
   FONT_WEIGHT,
   FONT_SIZE,
+  JSON_KEYS,
 } from "../constants";
 import useCanvasEvents from "./useCanvasEvents";
 import { createFilter, isTextType } from "../utils";
 import { useClipboard } from "./useClipboard";
+import { useHistory } from "./useHistory";
 
 function buildEditor({
+  save,
+  canRedo,
+  canUndo,
+  redo,
+  undo,
   autoZoom,
   canvas,
   fillColor,
@@ -81,10 +88,19 @@ function buildEditor({
   return {
     autoZoom,
     getWorkspace,
+    canRedo,
+    canUndo,
+    onRedo: () => redo(),
+    onUndo: () => undo(),
+    onCopy: () => copy(),
+    onPaste: () => paste(),
     zoomIn() {
       let zoomRatio = canvas.getZoom() + 0.05;
       const center = canvas.getCenter();
-      canvas.zoomToPoint(new fabric.Point(center.left, center.top), zoomRatio);
+      canvas.zoomToPoint(
+        new fabric.Point(center.left, center.top),
+        zoomRatio >= 1 ? 1 : zoomRatio
+      );
     },
     zoomOut() {
       let zoomRatio = canvas.getZoom() - 0.05;
@@ -100,7 +116,7 @@ function buildEditor({
         workspace.set(value);
         autoZoom();
 
-        //TODO: save
+        save();
       }
     },
     changeBackground(value: string) {
@@ -109,6 +125,7 @@ function buildEditor({
         workspace.set({ fill: value });
         canvas.requestRenderAll();
         //TODO: save
+        save();
       }
     },
     enableDrawingMode() {
@@ -120,12 +137,6 @@ function buildEditor({
     },
     disableDrawingMode() {
       canvas.isDrawingMode = false;
-    },
-    onCopy() {
-      copy();
-    },
-    onPaste() {
-      paste();
     },
     addImage(value: string) {
       fabric.Image.fromURL(
@@ -440,6 +451,9 @@ export const useEditor = () => {
   const [fontSize, setFontSize] = useState(FONT_SIZE);
   const [imageFilter, setImageFilter] = useState<FilterType>("none");
 
+  const { save, canRedo, canUndo, redo, undo, canvasHistory, setHistoryIndex } =
+    useHistory({ canvas });
+
   const { copy, paste } = useClipboard({ canvas: canvas ?? undefined });
   const { autoZoom } = useAutoResize({
     canvas: canvas,
@@ -447,6 +461,7 @@ export const useEditor = () => {
   });
 
   useCanvasEvents({
+    save,
     canvas,
     container,
     setSelectedObjects,
@@ -455,6 +470,11 @@ export const useEditor = () => {
   const editor = useMemo(() => {
     if (canvas) {
       return buildEditor({
+        save,
+        canRedo,
+        canUndo,
+        redo,
+        undo,
         autoZoom,
         canvas,
         fillColor,
@@ -490,6 +510,11 @@ export const useEditor = () => {
     return undefined;
   }, [
     canvas,
+    save,
+    canRedo,
+    canUndo,
+    redo,
+    undo,
     autoZoom,
     fillColor,
     strokeColor,
@@ -518,33 +543,40 @@ export const useEditor = () => {
     cornerStrokeColor: "#3b82f6",
   });
 
-  const init = useCallback(({ canvas, container }: ICanvas) => {
-    if (canvas && container) {
-      const workspace = new fabric.Rect({
-        //85% of the container width
-        width: 900,
-        height: 1200,
-        fill: "white",
-        name: "clip",
-        selectable: false,
-        hasControls: false,
-        shadow: new fabric.Shadow({
-          color: "rgba(0,0,0,0.8)",
-          blur: 5,
-        }),
-      });
+  const init = useCallback(
+    ({ canvas, container }: ICanvas) => {
+      if (canvas && container) {
+        const workspace = new fabric.Rect({
+          //85% of the container width
+          width: 900,
+          height: 1200,
+          fill: "white",
+          name: "clip",
+          selectable: false,
+          hasControls: false,
+          shadow: new fabric.Shadow({
+            color: "rgba(0,0,0,0.8)",
+            blur: 5,
+          }),
+        });
 
-      canvas.setWidth(container.offsetWidth);
-      canvas.setHeight(container.offsetHeight);
+        canvas.setWidth(container.offsetWidth);
+        canvas.setHeight(container.offsetHeight);
 
-      canvas.add(workspace).centerObject(workspace);
-      // this will clip the canvas to the workspace, so every object outside the workspace will be clipped
-      canvas.clipPath = workspace;
+        canvas.add(workspace).centerObject(workspace);
+        // this will clip the canvas to the workspace, so every object outside the workspace will be clipped
+        canvas.clipPath = workspace;
 
-      setCanvas(canvas);
-      setContainer(container);
-    }
-  }, []);
+        setCanvas(canvas);
+        setContainer(container);
+
+        const currentState = JSON.stringify(canvas.toJSON(JSON_KEYS));
+        canvasHistory.current = [currentState];
+        setHistoryIndex(0);
+      }
+    },
+    [canvasHistory, setHistoryIndex]
+  );
   return {
     init,
     editor,

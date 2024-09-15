@@ -4,18 +4,21 @@ import { Button } from "@/components/ui/button";
 type Props = {
   label: string;
   icon: React.ReactNode;
-  onClick?: () => void;
   className?: string;
+  disabled?: boolean;
+  onClick?: () => void;
 };
 export default function NavbarActionItem({
   label,
   icon,
   className,
+  disabled,
   onClick,
 }: Props) {
   return (
     <Hint label={label} side="bottom" sideOffset={10}>
       <Button
+        disabled={disabled}
         variant="ghost"
         size="icon"
         onClick={onClick}
