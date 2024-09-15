@@ -26,8 +26,9 @@ export const DrawSidebar = ({
   );
 
   const onClose = useCallback(() => {
+    editor?.disableDrawingMode();
     onChangeActiveTool("select");
-  }, [onChangeActiveTool]);
+  }, [onChangeActiveTool, editor]);
 
   const onChange = (value: string) => {
     editor?.changeStrokeColor(value);

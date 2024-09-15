@@ -23,6 +23,7 @@ import { createFilter, isTextType } from "../utils";
 import { useClipboard } from "./useClipboard";
 
 function buildEditor({
+  autoZoom,
   canvas,
   fillColor,
   setFillColor,
@@ -79,6 +80,24 @@ function buildEditor({
   };
 
   return {
+    getWorkspace,
+    changeSize(value: { width: number; height: number }) {
+      const workspace = getWorkspace();
+      if (workspace) {
+        workspace.set(value);
+        autoZoom();
+
+        //TODO: save
+      }
+    },
+    changeBackground(value: string) {
+      const workspace = getWorkspace();
+      if (workspace) {
+        workspace.set({ fill: value });
+        canvas.requestRenderAll();
+        //TODO: save
+      }
+    },
     enableDrawingMode() {
       canvas.discardActiveObject();
       canvas.requestRenderAll();
@@ -409,7 +428,7 @@ export const useEditor = () => {
   const [imageFilter, setImageFilter] = useState<FilterType>("none");
 
   const { copy, paste } = useClipboard({ canvas: canvas ?? undefined });
-  useAutoResize({
+  const { autoZoom } = useAutoResize({
     canvas: canvas,
     container,
   });
@@ -423,6 +442,7 @@ export const useEditor = () => {
   const editor = useMemo(() => {
     if (canvas) {
       return buildEditor({
+        autoZoom,
         canvas,
         fillColor,
         setFillColor,
@@ -457,6 +477,7 @@ export const useEditor = () => {
     return undefined;
   }, [
     canvas,
+    autoZoom,
     fillColor,
     strokeColor,
     strokeWidth,

@@ -20,6 +20,8 @@ import { FilterSidebar } from "./sidebar/FilterSidebar";
 import { AISidebar } from "./sidebar/AISidebar";
 import { DrawSidebar } from "./sidebar/DrawSidebar";
 
+import { SettingsSidebar } from "./sidebar/SettingsSidebar";
+
 type Props = {};
 export default function Editor({}: Props) {
   const { init, editor } = useEditor();
@@ -137,6 +139,11 @@ export default function Editor({}: Props) {
           onChangeActiveTool={onChangeActiveTool}
         />
         <DrawSidebar
+          editor={editor}
+          activeTool={activeTool}
+          onChangeActiveTool={onChangeActiveTool}
+        />
+        <SettingsSidebar
           editor={editor}
           activeTool={activeTool}
           onChangeActiveTool={onChangeActiveTool}
