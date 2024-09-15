@@ -63,8 +63,8 @@ export const SettingsSidebar = ({
       )}
     >
       <ToolSidebarHeader
-        title="Settings"
-        description="Change workspace settings"
+        title="Workspace Settings"
+        description="Change the look and feel of your workspace"
       />
       <ScrollArea>
         <form className="p-4 space-y-4" onSubmit={onSubmit}>
