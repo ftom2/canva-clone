@@ -1,14 +1,17 @@
 import { DropdownMenuItem } from "@/components/ui/dropdown-menu";
 import { CiFileOn } from "react-icons/ci";
-import { EXPORT_MENU_ITEMS } from "../../constants";
+import { getNavbarItems } from "@/app/editor/utils";
 
-type Item = (typeof EXPORT_MENU_ITEMS)[0];
+type Item = ReturnType<typeof getNavbarItems>[0];
 type Props = {
   item: Item;
 };
 export default function NavbarDropdownItem({ item }: Props) {
   return (
-    <DropdownMenuItem className="flex items-center gap-2">
+    <DropdownMenuItem
+      className="flex items-center gap-2"
+      onClick={item.onClick}
+    >
       <CiFileOn className="size-8" />
       <div>
         <p>{item.label}</p>

@@ -10,25 +10,6 @@ import {
 import * as material from "material-colors";
 import { ActiveTool, FilterType } from "./types";
 
-export const EXPORT_MENU_ITEMS = [
-  {
-    label: "JSON",
-    description: "Save for later editing",
-  },
-  {
-    label: "PNG",
-    description: "Best for sharing on the web",
-  },
-  {
-    label: "JPG",
-    description: "Best for printing",
-  },
-  {
-    label: "SVG",
-    description: "Best for editing in vector graphics software",
-  },
-];
-
 export const SIDEBAR_ITEMS = [
   {
     icon: LayoutTemplate,

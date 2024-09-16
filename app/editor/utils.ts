@@ -1,7 +1,7 @@
 import { uuid } from "uuidv4";
 import { fabric } from "fabric";
 import type { RGBColor } from "react-color";
-import { FilterType } from "./types";
+import { FilterType, IEditor } from "./types";
 
 export function transformText(objects: any) {
   if (!objects) return;
@@ -10,7 +10,7 @@ export function transformText(objects: any) {
     if (item.objects) {
       transformText(item.objects);
     } else {
-      item.type === "text" && item.type === "textbox";
+      item.type === "text" && (item.type = "textbox");
     }
   });
 }
@@ -142,3 +142,31 @@ export const createFilter = (value: FilterType) => {
 
   return effect;
 };
+
+export function getNavbarItems(editor?: IEditor) {
+  return [
+    {
+      label: "JSON",
+      description: "Save for later editing",
+      onClick: () => editor?.saveJson(),
+    },
+    {
+      label: "PNG",
+      description: "Best for sharing on the web",
+      onClick: () => {
+        console.log("Saving PNG");
+        editor?.saveCanvasAsImage("png");
+      },
+    },
+    {
+      label: "JPG",
+      description: "Best for printing",
+      onClick: () => editor?.saveCanvasAsImage("jpg"),
+    },
+    {
+      label: "SVG",
+      description: "Best for editing in vector graphics software",
+      onClick: () => editor?.saveCanvasAsImage("svg"),
+    },
+  ];
+}

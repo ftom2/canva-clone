@@ -19,10 +19,16 @@ import {
   JSON_KEYS,
 } from "../constants";
 import useCanvasEvents from "./useCanvasEvents";
-import { createFilter, isTextType } from "../utils";
+import {
+  createFilter,
+  downloadFile,
+  isTextType,
+  transformText,
+} from "../utils";
 import { useClipboard } from "./useClipboard";
 import { useHistory } from "./useHistory";
 import { useHotkeys } from "./useHotkeys";
+import { useWindowEvents } from "./useWindowEvents";
 
 function buildEditor({
   save,
@@ -61,6 +67,46 @@ function buildEditor({
   copy,
   paste,
 }: BuildEditorProps): IEditor {
+  function generateSaveOptions() {
+    const { width, height, left, top } = getWorkspace() as fabric.Rect;
+
+    return {
+      name: "Image",
+      alt: "Image",
+      format: "png",
+      quality: 1,
+      width,
+      height,
+      left,
+      top,
+    };
+  }
+
+  function saveCanvasAsImage(type: "png" | "jpg" | "svg") {
+    const options = generateSaveOptions();
+    canvas.setViewportTransform([1, 0, 0, 1, 0, 0]);
+    const dataUrl = canvas.toDataURL(options);
+
+    downloadFile(dataUrl, type);
+    autoZoom();
+  }
+
+  function saveJson() {
+    const json = canvas.toJSON(JSON_KEYS);
+    transformText(json.objects);
+    const jsonString = JSON.stringify(json, null, "\t");
+    const dataUrl = `data:text/json;charset=utf-8,${encodeURIComponent(
+      jsonString
+    )}`;
+    downloadFile(dataUrl, "json");
+  }
+
+  function loadJson(json: string) {
+    canvas.loadFromJSON(json, () => {
+      autoZoom();
+    });
+  }
+
   function getWorkspace() {
     return canvas.getObjects().find((obj) => obj.name === "clip");
   }
@@ -87,6 +133,9 @@ function buildEditor({
   };
 
   return {
+    saveCanvasAsImage,
+    saveJson,
+    loadJson,
     autoZoom,
     getWorkspace,
     canRedo,
@@ -460,6 +509,8 @@ export const useEditor = () => {
     canvas: canvas,
     container,
   });
+
+  useWindowEvents();
 
   useCanvasEvents({
     save,

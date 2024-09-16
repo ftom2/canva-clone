@@ -1,5 +1,5 @@
 "use client";
-
+import { useFilePicker } from "use-file-picker";
 import Logo from "../Logo";
 import { Button } from "@/components/ui/button";
 import {
@@ -14,16 +14,32 @@ import { Separator } from "@/components/ui/separator";
 import NavbarActionItem from "./NavbarActionItem";
 import { BsCloudCheck } from "react-icons/bs";
 import Dropdown from "@/components/Dropdown";
-import { EXPORT_MENU_ITEMS } from "../../constants";
 import NavbarDropdownItem from "./NavbarDropdownItem";
 import { SidebarProps } from "../../types";
 import { cn } from "@/lib/utils";
+import { getNavbarItems } from "../../utils";
 
 export default function Navbar({
   activeTool,
   onChangeActiveTool,
   editor,
 }: SidebarProps) {
+  const { openFilePicker } = useFilePicker({
+    accept: ".json",
+    onFilesSuccessfullySelected: ({ plainFiles }: any) => {
+      if (plainFiles && plainFiles.length) {
+        const file = plainFiles[0];
+        const reader = new FileReader();
+        reader.readAsText(file, "UTF-8");
+
+        reader.onload = (e) => {
+          const result = e.target?.result as string;
+
+          editor?.loadJson(result);
+        };
+      }
+    },
+  });
   return (
     <div className="w-full flex items-center p-4 h-[68px] gap-x-8 border-b lg:pl-8">
       <Logo />
@@ -37,7 +53,11 @@ export default function Navbar({
           }
         >
           <NavbarDropdownItem
-            item={{ label: "Open", description: "Open a JSON file" }}
+            item={{
+              label: "Open",
+              description: "Open a JSON file",
+              onClick: openFilePicker,
+            }}
           />
         </Dropdown>
 
@@ -75,7 +95,7 @@ export default function Navbar({
               </Button>
             }
           >
-            {EXPORT_MENU_ITEMS.map((item) => (
+            {getNavbarItems(editor).map((item) => (
               <NavbarDropdownItem key={item.label} item={item} />
             ))}
           </Dropdown>
