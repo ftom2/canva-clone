@@ -1,7 +1,9 @@
 import { auth } from "@/auth";
 import { Button } from "@/components/ui/button";
+import { protectServer } from "./(auth)/utils";
 
 export default async function Home() {
+  await protectServer();
   const session = await auth();
-  return <div>{JSON.stringify(session, null, 2)}</div>;
+  return <div>You are logged in</div>;
 }

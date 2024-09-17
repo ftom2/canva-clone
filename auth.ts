@@ -6,4 +6,7 @@ import { DrizzleAdapter } from "@auth/drizzle-adapter";
 export const { handlers, signIn, signOut, auth } = NextAuth({
   providers: [GitHub],
   adapter: DrizzleAdapter(db),
+  pages: {
+    signIn: "/sign-in",
+  },
 });

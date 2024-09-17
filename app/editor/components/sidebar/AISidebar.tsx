@@ -8,7 +8,7 @@ import { ToolSidebarClose } from "./ToolSidebarClose";
 import { useCallback, useState } from "react";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
-import { useGenerateImage } from "@/app/ai/api/use-generate-image";
+import { useGenerateImage } from "@/app/ai/hooks/use-generate-image";
 
 export const AISidebar = ({
   editor,
