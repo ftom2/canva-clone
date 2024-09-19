@@ -1,14 +1,14 @@
-import { cn } from "@/lib/utils";
 import { SidebarProps } from "@/app/editor/types";
-import { ToolSidebarHeader } from "./ToolSidebarHeader";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { cn } from "@/lib/utils";
+import { ToolSidebarHeader } from "./ToolSidebarHeader";
 
 import { ToolSidebarClose } from "./ToolSidebarClose";
 
-import { useCallback, useState } from "react";
-import { Textarea } from "@/components/ui/textarea";
+import { useGenerateImage } from "@/app/ai/hooks/useGenerateImage";
 import { Button } from "@/components/ui/button";
-import { useGenerateImage } from "@/app/ai/hooks/use-generate-image";
+import { Textarea } from "@/components/ui/textarea";
+import { useCallback, useState } from "react";
 
 export const AISidebar = ({
   editor,

@@ -9,7 +9,8 @@
     "lint": "next lint",
     "db:generate": "npx drizzle-kit generate",
     "db:migrate": "npx drizzle-kit migrate",
-    "db:studio": "npx drizzle-kit studio"
+    "db:studio": "npx drizzle-kit studio",
+    "db": "npm run db:generate && npm run db:migrate"
   },
   "dependencies": {
     "@auth/drizzle-adapter": "^1.5.0",
@@ -25,6 +26,7 @@
     "@radix-ui/react-tooltip": "^1.1.2",
     "@tanstack/react-query": "^5.55.0",
     "@uploadthing/react": "^6.8.0",
+    "bcryptjs": "^2.4.3",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "drizzle-orm": "^0.33.0",
@@ -34,8 +36,9 @@
     "lodash.debounce": "^4.0.8",
     "lucide-react": "^0.428.0",
     "material-colors": "^1.2.6",
-    "next": "14.2.5",
+    "next": "^14.2.12",
     "next-auth": "^5.0.0-beta.21",
+    "next-themes": "^0.3.0",
     "openai": "^4.58.1",
     "react": "^18",
     "react-color": "^2.19.3",
@@ -43,6 +46,7 @@
     "react-icons": "^5.3.0",
     "react-use": "^17.5.1",
     "replicate": "^0.32.1",
+    "sonner": "^1.5.0",
     "tailwind-merge": "^2.5.2",
     "tailwindcss-animate": "^1.0.7",
     "unsplash-js": "^7.0.19",
@@ -52,6 +56,7 @@
     "zod": "^3.23.8"
   },
   "devDependencies": {
+    "@types/bcryptjs": "^2.4.6",
     "@types/dotenv-flow": "^3.3.3",
     "@types/fabric": "^5.3.0",
     "@types/lodash.debounce": "^4.0.9",
